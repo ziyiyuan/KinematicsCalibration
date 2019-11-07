@@ -1,0 +1,6 @@
+/debug/*
+*.o
+*.user
+/data/*
+*.txt
+*.msr
