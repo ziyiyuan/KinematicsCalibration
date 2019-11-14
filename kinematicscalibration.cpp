@@ -11,13 +11,13 @@ Type stringtoNum(const string& str)
 
 static inline char * cp_str(CALIBRATE_PARA dpara)
 {
-   static char *strings[] = {"ALPHA1","A1","THETA1","D1","BETA1",
-                                  "ALPHA2","A2","THETA2","D2","BETA2",
-                                  "ALPHA3","A3","THETA3","D3","BETA3",
-                                  "ALPHA4","A4","THETA4","D4","BETA4",
-                                  "ALPHA5","A5","THETA5","D5","BETA5",
-                                  "ALPHA6","A6","THETA6","D6","BETA6",};
-   return strings[dpara];
+    static char *strings[] = {"ALPHA1","A1","THETA1","D1","BETA1",
+                              "ALPHA2","A2","THETA2","D2","BETA2",
+                              "ALPHA3","A3","THETA3","D3","BETA3",
+                              "ALPHA4","A4","THETA4","D4","BETA4",
+                              "ALPHA5","A5","THETA5","D5","BETA5",
+                              "ALPHA6","A6","THETA6","D6","BETA6",};
+    return strings[dpara];
 }
 
 KinematicsCalibration::KinematicsCalibration()
@@ -39,7 +39,7 @@ void KinematicsCalibration::initiallDHPara()
 {
     double a2, a3, d1, d2, d5, d6;
     rk->getRobotDHPara(a2, a3, d1, d2, d5, d6);
-// alpha a theta d beta
+    // alpha a theta d beta
     double temp1[MAX_IDEN_PARA_NUM] = {0      ,0  ,M_PI   ,d1,0,
                                        -M_PI/2,0  ,-M_PI/2,d2,0,
                                        M_PI   ,a2 ,0      ,0 ,0,
@@ -318,7 +318,9 @@ void KinematicsCalibration::GetEleIdentifyMatrix(double allPara[], int index, RV
 
     Pt_m = Origen_base[DOF + 1] - Pm;
 
-    //    double temp1 = norm(Pt_m);
+
+//    double N_l = Pt_m.norm(Pt_m);
+//    double d_i = line_i - Pt_m;
 
     for(int i = 0; i < 36; i++)
     {
@@ -361,7 +363,7 @@ void KinematicsCalibration::GetIdentifyMatrix(RMatrix& Phai_m, RVector& Line_v, 
     {
 
         for(int j = 0; j < DOF; j++)
-           allpara_i[5*j + 2] = all_para_[5*j + 2] + input_joint_angle_[i][j];//add joint angle :THETA
+            allpara_i[5*j + 2] = all_para_[5*j + 2] + input_joint_angle_[i][j];//add joint angle :THETA
 
         GetEleIdentifyMatrix(allpara_i, i, Phai_i, E_i);
 

@@ -41,6 +41,12 @@ struct POSITION
     double z;
 };
 
+struct CRITER
+{
+    double meanvalue;
+    double maxvalue;
+    double rmsvalue;
+};
 
 
 class KinematicsCalibration
