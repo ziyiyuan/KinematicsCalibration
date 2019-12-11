@@ -462,7 +462,7 @@ void RMatrix::svdSim(RMatrix &A,RMatrix &U,RMatrix &S,RMatrix &V)
                 U.value[j][i] = -U.value[j][i];
         }
     }
-}
+} 
 
 void RMatrix::qrFullRMatrix(RMatrix &A,RMatrix &Q)
 {

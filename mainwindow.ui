@@ -2,41 +2,28 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>702</width>
-    <height>479</height>
+    <width>681</width>
+    <height>553</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pBnone">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>-20</y>
-      <width>16</width>
-      <height>441</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QFrame" name="inputdata">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>0</y>
-      <width>521</width>
-      <height>81</height>
+      <x>200</x>
+      <y>10</y>
+      <width>471</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -50,8 +37,8 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>501</width>
-       <height>61</height>
+       <width>451</width>
+       <height>52</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout2">
@@ -78,9 +65,9 @@
    <widget class="QGroupBox" name="gBToolPara">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>120</y>
-      <width>131</width>
+      <x>200</x>
+      <y>360</y>
+      <width>121</width>
       <height>131</height>
      </rect>
     </property>
@@ -112,7 +99,7 @@ padding: 0 3px 0 3px;
     <widget class="QWidget" name="gridLayoutWidget_3">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>10</x>
        <y>20</y>
        <width>31</width>
        <height>101</height>
@@ -122,21 +109,21 @@ padding: 0 3px 0 3px;
       <item row="1" column="1">
        <widget class="QLabel" name="labelTy">
         <property name="text">
-         <string>Ty</string>
+         <string>Py</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLabel" name="labelTx">
         <property name="text">
-         <string>Tx</string>
+         <string>Px</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
        <widget class="QLabel" name="labelTz">
         <property name="text">
-         <string>Tz</string>
+         <string>Pz</string>
         </property>
        </widget>
       </item>
@@ -152,6 +139,22 @@ padding: 0 3px 0 3px;
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout3">
+      <item row="3" column="0">
+       <widget class="QLineEdit" name="lETz">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="cursorPosition">
+         <number>0</number>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0">
        <widget class="QLineEdit" name="lETy">
         <property name="enabled">
@@ -168,22 +171,6 @@ padding: 0 3px 0 3px;
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLineEdit" name="lETz">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>0</string>
-        </property>
-        <property name="cursorPosition">
-         <number>0</number>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -209,58 +196,12 @@ padding: 0 3px 0 3px;
      </layout>
     </widget>
    </widget>
-   <widget class="QWidget" name="gridLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>0</y>
-      <width>111</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="RobotType">
-     <item row="2" column="0">
-      <widget class="QComboBox" name="cBRobotType">
-       <item>
-        <property name="text">
-         <string>I3</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>I5</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>I7</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>I10</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="labelRobotType">
-       <property name="text">
-        <string>RobotType</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
    <widget class="QGroupBox" name="gBMeasurePara">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>270</y>
-      <width>131</width>
+      <x>336</x>
+      <y>360</y>
+      <width>190</width>
       <height>131</height>
      </rect>
     </property>
@@ -284,7 +225,7 @@ padding: 0 3px 0 3px;
 }</string>
     </property>
     <property name="title">
-     <string>Measure (mm)</string>
+     <string>Measure (mm/degree)</string>
     </property>
     <property name="flat">
      <bool>false</bool>
@@ -292,9 +233,9 @@ padding: 0 3px 0 3px;
     <widget class="QWidget" name="gridLayoutWidget_5">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>10</x>
        <y>20</y>
-       <width>31</width>
+       <width>51</width>
        <height>101</height>
       </rect>
      </property>
@@ -302,21 +243,21 @@ padding: 0 3px 0 3px;
       <item row="1" column="1">
        <widget class="QLabel" name="labelMy">
         <property name="text">
-         <string>My</string>
+         <string>Py/Ry</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLabel" name="labelMx">
         <property name="text">
-         <string>Mx</string>
+         <string>Px/Rx</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
        <widget class="QLabel" name="labelMz">
         <property name="text">
-         <string>Mz</string>
+         <string>Pz/Rz</string>
         </property>
        </widget>
       </item>
@@ -325,26 +266,13 @@ padding: 0 3px 0 3px;
     <widget class="QWidget" name="gridLayoutWidget_6">
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>60</x>
        <y>20</y>
        <width>61</width>
        <height>101</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayoutMPD">
-      <item row="2" column="0">
-       <widget class="QLineEdit" name="lEMy">
-        <property name="text">
-         <string>0</string>
-        </property>
-        <property name="cursorPosition">
-         <number>0</number>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="0">
        <widget class="QLineEdit" name="lEMz">
         <property name="text">
@@ -371,6 +299,70 @@ padding: 0 3px 0 3px;
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="QLineEdit" name="lEMy">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="cursorPosition">
+         <number>0</number>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="gridLayoutWidget_8">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>20</y>
+       <width>61</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayoutMPD_3">
+      <item row="3" column="0">
+       <widget class="QLineEdit" name="lEMRz">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="cursorPosition">
+         <number>0</number>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="lEMRx">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="cursorPosition">
+         <number>0</number>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLineEdit" name="lEMRy">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="cursorPosition">
+         <number>0</number>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </widget>
@@ -380,7 +372,7 @@ padding: 0 3px 0 3px;
     </property>
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>200</x>
       <y>100</y>
       <width>471</width>
       <height>241</height>
@@ -416,147 +408,18 @@ padding: 0 3px 0 3px;
       <rect>
        <x>10</x>
        <y>30</y>
-       <width>360</width>
-       <height>194</height>
+       <width>451</width>
+       <height>201</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gLDHpara">
-      <item row="1" column="0">
-       <widget class="QPushButton" name="pBalpha2">
-        <property name="text">
-         <string>alpha2</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="pBtheta1">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>theta1</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QPushButton" name="pBtheta2">
-        <property name="text">
-         <string>theta2</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QPushButton" name="pBalpha5">
-        <property name="text">
-         <string>alpha5</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="pBa3">
-        <property name="text">
-         <string>a3</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="2">
-       <widget class="QPushButton" name="pBtheta6">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>theta6</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QPushButton" name="pBtheta3">
-        <property name="text">
-         <string>theta3</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="pBalpha1">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>alpha1</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2">
+      <item row="3" column="4">
        <widget class="QPushButton" name="pBtheta4">
         <property name="text">
          <string>theta4</string>
         </property>
         <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
          <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="pBa1">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>a1</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -569,46 +432,39 @@ padding: 0 3px 0 3px;
          <string>alpha6</string>
         </property>
         <property name="checkable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="pBa2">
+      <item row="0" column="5">
+       <widget class="QPushButton" name="pBbeta1">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="text">
-         <string>a2</string>
+         <string>beta1</string>
         </property>
         <property name="checkable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
-       <widget class="QPushButton" name="pBa6">
-        <property name="text">
-         <string>a6</string>
-        </property>
-        <property name="checkable">
+      <item row="0" column="1">
+       <widget class="QPushButton" name="pBa1">
+        <property name="enabled">
          <bool>true</bool>
         </property>
-        <property name="checked">
+        <property name="text">
+         <string>a1</string>
+        </property>
+        <property name="checkable">
          <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QPushButton" name="pBa4">
-        <property name="text">
-         <string>a4</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -621,94 +477,42 @@ padding: 0 3px 0 3px;
          <string>a5</string>
         </property>
         <property name="checkable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QPushButton" name="pBalpha4">
-        <property name="text">
-         <string>alpha4</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QPushButton" name="pBalpha3">
-        <property name="text">
-         <string>alpha3</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QPushButton" name="pBd1">
+      <item row="0" column="4">
+       <widget class="QPushButton" name="pBtheta1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text">
-         <string>d1</string>
+         <string>theta1</string>
         </property>
         <property name="checkable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
         </property>
        </widget>
       </item>
-      <item row="5" column="3">
-       <widget class="QPushButton" name="pBd6">
+      <item row="1" column="0">
+       <widget class="QPushButton" name="pBalpha2">
         <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="mouseTracking">
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>d6</string>
+         <string>alpha2</string>
         </property>
         <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
          <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="3">
-       <widget class="QPushButton" name="pBd5">
-        <property name="text">
-         <string>d5</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="3">
-       <widget class="QPushButton" name="pBd4">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>d4</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -718,13 +522,13 @@ padding: 0 3px 0 3px;
       <item row="2" column="3">
        <widget class="QPushButton" name="pBd3">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text">
          <string>d3</string>
         </property>
         <property name="checkable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -737,48 +541,23 @@ padding: 0 3px 0 3px;
          <string>d2</string>
         </property>
         <property name="checkable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
         </property>
        </widget>
       </item>
-      <item row="4" column="2">
-       <widget class="QPushButton" name="pBtheta5">
-        <property name="text">
-         <string>theta5</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QWidget" name="gridLayoutWidget_8">
-     <property name="geometry">
-      <rect>
-       <x>370</x>
-       <y>30</y>
-       <width>91</width>
-       <height>194</height>
-      </rect>
-     </property>
-     <layout class="QGridLayout" name="gLBetapara">
-      <item row="2" column="0">
-       <widget class="QPushButton" name="pBbeta3">
+      <item row="5" column="3">
+       <widget class="QPushButton" name="pBd6">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text">
-         <string>beta3</string>
+         <string>d6</string>
         </property>
         <property name="checkable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -786,15 +565,12 @@ padding: 0 3px 0 3px;
        </widget>
       </item>
       <item row="4" column="0">
-       <widget class="QPushButton" name="pBbeta5">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
+       <widget class="QPushButton" name="pBalpha5">
         <property name="text">
-         <string>beta5</string>
+         <string>alpha5</string>
         </property>
         <property name="checkable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -802,31 +578,131 @@ padding: 0 3px 0 3px;
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QPushButton" name="pBbeta1">
+       <widget class="QPushButton" name="pBalpha1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text">
-         <string>beta1</string>
+         <string>alpha1</string>
         </property>
         <property name="checkable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="QPushButton" name="pBbeta6">
+      <item row="0" column="3">
+       <widget class="QPushButton" name="pBd1">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text">
-         <string>beta6</string>
+         <string>d1</string>
         </property>
         <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="pBa3">
+        <property name="text">
+         <string>a3</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="3">
+       <widget class="QPushButton" name="pBd5">
+        <property name="text">
+         <string>d5</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QPushButton" name="pBd4">
+        <property name="enabled">
          <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>d4</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="5">
+       <widget class="QPushButton" name="pBbeta2">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>beta2</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="pBa4">
+        <property name="text">
+         <string>a4</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QPushButton" name="pBa6">
+        <property name="text">
+         <string>a6</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="pBa2">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>a2</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -834,9 +710,122 @@ padding: 0 3px 0 3px;
        </widget>
       </item>
       <item row="3" column="0">
+       <widget class="QPushButton" name="pBalpha4">
+        <property name="text">
+         <string>alpha4</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="pBalpha3">
+        <property name="text">
+         <string>alpha3</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
+       <widget class="QPushButton" name="pBtheta2">
+        <property name="text">
+         <string>theta2</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="4">
+       <widget class="QPushButton" name="pBtheta5">
+        <property name="text">
+         <string>theta5</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="4">
+       <widget class="QPushButton" name="pBtheta6">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>theta6</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="4">
+       <widget class="QPushButton" name="pBtheta3">
+        <property name="text">
+         <string>theta3</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="5">
+       <widget class="QPushButton" name="pBbeta6">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>beta6</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="5">
+       <widget class="QPushButton" name="pBbeta5">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>beta5</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="5">
        <widget class="QPushButton" name="pBbeta4">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text">
          <string>beta4</string>
@@ -849,16 +838,16 @@ padding: 0 3px 0 3px;
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="pBbeta2">
+      <item row="2" column="5">
+       <widget class="QPushButton" name="pBbeta3">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text">
-         <string>beta2</string>
+         <string>beta3</string>
         </property>
         <property name="checkable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -867,71 +856,12 @@ padding: 0 3px 0 3px;
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="gridLayoutWidget_9">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>240</y>
-       <width>91</width>
-       <height>71</height>
-      </rect>
-     </property>
-     <layout class="QGridLayout" name="gridLayout"/>
-    </widget>
-   </widget>
-   <widget class="QCheckBox" name="cBCalibrationBeta">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>80</y>
-      <width>141</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>CalibrationBeta</string>
-    </property>
-    <property name="checked">
-     <bool>false</bool>
-    </property>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>330</x>
-      <y>360</y>
-      <width>201</width>
-      <height>40</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="pBrestart">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>restart</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pBoutputresult">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>output result</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </widget>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>360</y>
+      <x>20</x>
+      <y>240</y>
       <width>121</width>
       <height>52</height>
      </rect>
@@ -939,6 +869,9 @@ padding: 0 3px 0 3px;
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QRadioButton" name="rBshowDpara">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>show dpara</string>
        </property>
@@ -946,6 +879,9 @@ padding: 0 3px 0 3px;
      </item>
      <item>
       <widget class="QRadioButton" name="rBshowpara">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>show para</string>
        </property>
@@ -956,9 +892,9 @@ padding: 0 3px 0 3px;
    <widget class="QPushButton" name="pBCalibrate">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>350</y>
-      <width>101</width>
+      <x>30</x>
+      <y>420</y>
+      <width>111</width>
       <height>60</height>
      </rect>
     </property>
@@ -966,13 +902,329 @@ padding: 0 3px 0 3px;
      <string>Start</string>
     </property>
    </widget>
+   <widget class="QGroupBox" name="gBInitiallize">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>151</width>
+      <height>211</height>
+     </rect>
+    </property>
+    <property name="baseSize">
+     <size>
+      <width>3</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QGroupBox {
+border: 1px solid gray;
+border-radius: 9px;
+margin-top: 0.5em;
+}
+
+QGroupBox::title {
+subcontrol-origin: margin;
+left: 10px;
+padding: 0 3px 0 3px;
+}</string>
+    </property>
+    <property name="title">
+     <string>Initiallize</string>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+    <widget class="QCheckBox" name="cBCalibrationBeta">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>180</y>
+       <width>141</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>CalibrationBeta</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QWidget" name="gridLayoutWidget_10">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>131</width>
+       <height>52</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="CaliType">
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelCaliType">
+        <property name="text">
+         <string>CalibrationType</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QComboBox" name="cBCaliType">
+        <item>
+         <property name="text">
+          <string>Line</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Leica</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="gridLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>131</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="RobotType">
+      <item row="2" column="0">
+       <widget class="QComboBox" name="cBRobotType">
+        <item>
+         <property name="text">
+          <string>I3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>I5</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>I7</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>I10</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelRobotType">
+        <property name="text">
+         <string>RobotType</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="pBCalibrate_2">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>-10</y>
+      <width>20</width>
+      <height>511</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frResult">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>310</y>
+      <width>121</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="verticalLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>121</width>
+       <height>80</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QPushButton" name="pBoutputresult">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>output result</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pBrestart">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>restart</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="gBToolPara_2">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>360</y>
+      <width>131</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="baseSize">
+     <size>
+      <width>3</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QGroupBox {
+border: 1px solid gray;
+border-radius: 9px;
+margin-top: 0.5em;
+}
+
+QGroupBox::title {
+subcontrol-origin: margin;
+left: 10px;
+padding: 0 3px 0 3px;
+}</string>
+    </property>
+    <property name="title">
+     <string>Criter (mm)</string>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+    <widget class="QWidget" name="gridLayoutWidget_11">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>51</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayoutMP_2">
+      <item row="2" column="1">
+       <widget class="QLabel" name="labelRMS">
+        <property name="text">
+         <string>rms</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="labelMean">
+        <property name="text">
+         <string>mean</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="labelMax">
+        <property name="text">
+         <string>max</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="gridLayoutWidget_12">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>20</y>
+       <width>61</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayoutMPD_2">
+      <item row="3" column="0">
+       <widget class="QLineEdit" name="lERMS">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="cursorPosition">
+         <number>0</number>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLineEdit" name="lEMax">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="cursorPosition">
+         <number>0</number>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="lEMean">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="cursorPosition">
+         <number>0</number>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>702</width>
+     <width>681</width>
      <height>25</height>
     </rect>
    </property>

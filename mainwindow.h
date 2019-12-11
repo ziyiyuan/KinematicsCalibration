@@ -4,8 +4,11 @@
 #include <QMainWindow>
 #include "robotkinematics.h"
 #include "kinematicscalibration.h"
+
 #include "dialog.h"
 #include <QFileDialog>
+
+#include "CalibrationType.h"
 
 namespace Ui {
 class MainWindow;
@@ -29,31 +32,6 @@ private slots:
 
     void on_pBCalibrate_clicked();
 
-
-    void on_pBalpha2_clicked(bool checked);
-    void on_pBalpha3_clicked(bool checked);
-    void on_pBalpha4_clicked(bool checked);
-    void on_pBalpha5_clicked(bool checked);
-    void on_pBalpha6_clicked(bool checked);
-
-    void on_pBa2_clicked(bool checked);
-    void on_pBa3_clicked(bool checked);
-    void on_pBa4_clicked(bool checked);
-    void on_pBa5_clicked(bool checked);
-    void on_pBa6_clicked(bool checked);
-
-    void on_pBtheta2_clicked(bool checked);
-    void on_pBtheta3_clicked(bool checked);
-    void on_pBtheta4_clicked(bool checked);
-    void on_pBtheta5_clicked(bool checked);
-
-    void on_pBd2_clicked(bool checked);
-    void on_pBd5_clicked(bool checked);
-
-    void on_pBbeta3_clicked(bool checked);
-    void on_pBbeta4_clicked(bool checked);
-
-
     void on_cBDatadir_currentTextChanged(const QString &arg1);
 
     void on_rBshowpara_clicked(bool checked);
@@ -64,9 +42,17 @@ private slots:
 
     void on_pBoutputresult_clicked();
 
+    void on_cBCaliType_currentIndexChanged(int index);
+
+    void showToolpara();
+
+
 private:
     Ui::MainWindow *ui;
     KinematicsCalibration *kc;
+
+    CaliType *calitype;
+
     Dialog *dialog;
 
 };

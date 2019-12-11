@@ -4,50 +4,28 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <sstream>
+#include <sstream> // string stream
 #include <math.h>
-#include <string.h>
+#include <string>
 #include <stdio.h>
 
 #include "robotkinematics.h"
-
+#include "CalibrationType.h"
+#include "CaliLine.h"
+#include "CaliLeica.h"
 
 using namespace std;
-#define MAX_IDEN_PARA_NUM 30  //maximum identification parameter number, all dh para;
-#define MEA_DATA_NUM 60  //measure waypoint number,
-
-#define DOF 6
-#define POSITION_DOF 3
-
-#define D2r M_PI/180
-#define r2D 180/M_PI
-
-#define MM2METER 1000.0
 
 typedef enum
 {
-    ALPHA1 = 0,A1,THETA1,D1,BETA1,
-    ALPHA2,A2,THETA2,D2,BETA2,
-    ALPHA3,A3,THETA3,D3,BETA3,
-    ALPHA4,A4,THETA4,D4,BETA4,
-    ALPHA5,A5,THETA5,D5,BETA5,
-    ALPHA6,A6,THETA6,D6,BETA6,
-}CALIBRATE_PARA;
+    ALPHA1 = 0,A1,D1,THETA1,BETA1,
+    ALPHA2,A2,D2,THETA2,BETA2,
+    ALPHA3,A3,D3,THETA3,BETA3,
+    ALPHA4,A4,D4,THETA4,BETA4,
+    ALPHA5,A5,D5,THETA5,BETA5,
+    ALPHA6,A6,D6,THETA6,BETA6,
 
-struct POSITION
-{
-    double x;
-    double y;
-    double z;
-};
-
-struct CRITER
-{
-    double meanvalue;
-    double maxvalue;
-    double rmsvalue;
-};
-
+} CALIBRATE_PARA;
 
 class KinematicsCalibration
 {
@@ -59,58 +37,44 @@ public:
 
     void setRobotDHPara(ROBOT_TYPE type);
 
-    void loadMeasuredData(std::string datafile);
-    void loadInputJointAngle(std::string  datafile);
-    void loadInputToolData(std::string  datafile);
+    void setCaliType(const std::string& type);
 
-    void setCheckFlag(int index, bool value);
     void setCalibrationBeta(bool value);
 
     double getToolPara(std::string index);
-    void getAllPara(double allpara[]);
-    void getAllDPara(double all_d_para[]);
 
-    //
-    int calibrationDHParaNum();
-    int calibrationParaNum(int calibration_dh_para_num);
+    void getAllDPara(double all_d_para[]);
 
     bool calibration();
 
-    void GetEleIdentifyMatrix(double allPara[], int index, RVector& Phai_i, double& E_i);
+    void outputClibrationDPara(std::string  path, std::string data_file);
 
-    void GetIdentifyMatrix(RMatrix& Phai_m, RVector& Line_v, double& Eerror);
-
-    void getIncrePara(RVector& d_para, double& Eerror_last);
-
-    void updataAllPara(const RVector& d_para);
-
-    void outputClibrationDPara(std::string  path);
-
-    void showdpara();
+    bool LoadData(const std::string& datafile);
 
 
-//    static inline char * cp_str(enum CALIBRATE_PARA dpara);
+    void setPara();
+
+    void calAllPara();
+
+    void getAllPara(double allpara[]);
+
+    void getCriter(double output_criter[]);
+
+    void updateMemberPara();
 
 
 
 private:
-    bool check_flag_[MAX_IDEN_PARA_NUM];
-    bool calibration_beta_;
-    int measure_data_length_;
-    std::vector<double> measure_line_data_;
-    std::vector<vector<double> > input_joint_angle_;
-    POSITION tool_para_;
-    POSITION measurement_para_;
-
     RobotKinematics *rk;
-    int calibration_dh_para_num_;//dh
-    int calibration_para_num_;//dh + tool + measure;
+    CaliType *cali_type;
+    CaliLine *cali_line;
+    CaliLeica *cali_leica;
 
-    double all_para_[36];
-    double all_d_para_[36];
-    double all_dh_para_[30];//dh + tool + measure;//initiallized when path changed
+    RVector d_allpara;
+    double all_para_[MAX_IDEN_PARA_NUM];
 
-    CALIBRATE_PARA dpara;
+public:
+    CALIBRATE_METHOD cali_method_;
 
 
 };
