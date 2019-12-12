@@ -102,42 +102,47 @@ void MainWindow::on_rBshowpara_clicked(bool checked)
     kc->getAllPara(allpara);
 
     ui->rBshowDpara->setChecked(!checked);
-    int i = 6;
-    ui->pBalpha1->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
-    ui->pBa1->setText(QString::number((allpara[i]*METER2MM),'g',5)); i++;
-    ui->pBd1->setText(QString::number((allpara[i]*METER2MM),'g',5)); i++;
-    ui->pBtheta1->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
-    ui->pBbeta1->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
+    int i;
+    if(kc->kc_cali_method_ == CALI_LINE)
+        i = 6;
+    if(kc->kc_cali_method_ == CALI_LEICA)
+        i = 9;
 
-    ui->pBalpha2->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
-    ui->pBa2->setText(QString::number((allpara[i]*METER2MM),'g',5)); i++;
-    ui->pBd2->setText(QString::number((allpara[i]*METER2MM),'g',5)); i++;
-    ui->pBtheta2->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
-    ui->pBbeta2->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
+    ui->pBalpha1->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
+    ui->pBa1->setText(QString::number((allpara[i]*METER2MM),'g',6)); i++;
+    ui->pBd1->setText(QString::number((allpara[i]*METER2MM),'g',6)); i++;
+    ui->pBtheta1->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
+    ui->pBbeta1->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
 
-    ui->pBalpha3->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
-    ui->pBa3->setText(QString::number((allpara[i]*METER2MM),'g',5)); i++;
-    ui->pBd3->setText(QString::number((allpara[i]*METER2MM),'g',5)); i++;
-    ui->pBtheta3->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
-    ui->pBbeta3->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
+    ui->pBalpha2->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
+    ui->pBa2->setText(QString::number((allpara[i]*METER2MM),'g',6)); i++;
+    ui->pBd2->setText(QString::number((allpara[i]*METER2MM),'g',6)); i++;
+    ui->pBtheta2->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
+    ui->pBbeta2->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
 
-    ui->pBalpha4->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
-    ui->pBa4->setText(QString::number((allpara[i]*METER2MM),'g',5)); i++;
-    ui->pBd4->setText(QString::number((allpara[i]*METER2MM),'g',5)); i++;
-    ui->pBtheta4->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
-    ui->pBbeta4->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
+    ui->pBalpha3->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
+    ui->pBa3->setText(QString::number((allpara[i]*METER2MM),'g',6)); i++;
+    ui->pBd3->setText(QString::number((allpara[i]*METER2MM),'g',6)); i++;
+    ui->pBtheta3->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
+    ui->pBbeta3->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
 
-    ui->pBalpha5->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
-    ui->pBa5->setText(QString::number((allpara[i]*METER2MM),'g',5)); i++;
-    ui->pBd5->setText(QString::number((allpara[i]*METER2MM),'g',5)); i++;
-    ui->pBtheta5->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
-    ui->pBbeta5->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
+    ui->pBalpha4->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
+    ui->pBa4->setText(QString::number((allpara[i]*METER2MM),'g',6)); i++;
+    ui->pBd4->setText(QString::number((allpara[i]*METER2MM),'g',6)); i++;
+    ui->pBtheta4->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
+    ui->pBbeta4->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
 
-    ui->pBalpha6->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
-    ui->pBa6->setText(QString::number((allpara[i]*METER2MM),'g',5)); i++;
-    ui->pBd6->setText(QString::number((allpara[i]*METER2MM),'g',5)); i++;
-    ui->pBtheta6->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
-    ui->pBbeta6->setText(QString::number((allpara[i]*r2D),'g',5)); i++;
+    ui->pBalpha5->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
+    ui->pBa5->setText(QString::number((allpara[i]*METER2MM),'g',6)); i++;
+    ui->pBd5->setText(QString::number((allpara[i]*METER2MM),'g',6)); i++;
+    ui->pBtheta5->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
+    ui->pBbeta5->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
+
+    ui->pBalpha6->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
+    ui->pBa6->setText(QString::number((allpara[i]*METER2MM),'g',6)); i++;
+    ui->pBd6->setText(QString::number((allpara[i]*METER2MM),'g',6)); i++;
+    ui->pBtheta6->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
+    ui->pBbeta6->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
 
 
 
@@ -149,45 +154,82 @@ void MainWindow::on_rBshowDpara_clicked(bool checked)
     kc->getAllDPara(all_d_para);
     ui->rBshowpara->setChecked(!checked);
 
-    int i = 6;
-    ui->pBalpha1->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
-    ui->pBa1->setText(QString::number((all_d_para[i]*METER2MM),'g',5)); i++;
-    ui->pBd1->setText(QString::number((all_d_para[i]*METER2MM),'g',5)); i++;
-    ui->pBtheta1->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
-    ui->pBbeta1->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
+    int i;
 
-    ui->pBalpha2->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
-    ui->pBa2->setText(QString::number((all_d_para[i]*METER2MM),'g',5)); i++;
-    ui->pBd2->setText(QString::number((all_d_para[i]*METER2MM),'g',5)); i++;
-    ui->pBtheta2->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
-    ui->pBbeta2->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
+    if(kc->kc_cali_method_ == CALI_LINE)
+        i = 6;
+    if(kc->kc_cali_method_ == CALI_LEICA)
+        i = 9;
 
-    ui->pBalpha3->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
-    ui->pBa3->setText(QString::number((all_d_para[i]*METER2MM),'g',5)); i++;
-    ui->pBd3->setText(QString::number((all_d_para[i]*METER2MM),'g',5)); i++;
-    ui->pBtheta3->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
-    ui->pBbeta3->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
+    ui->pBalpha1->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
+    ui->pBa1->setText(QString::number((all_d_para[i]*METER2MM),'f',5)); i++;
+    ui->pBd1->setText(QString::number((all_d_para[i]*METER2MM),'f',5)); i++;
+    ui->pBtheta1->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
+    ui->pBbeta1->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
 
-    ui->pBalpha4->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
-    ui->pBa4->setText(QString::number((all_d_para[i]*METER2MM),'g',5)); i++;
-    ui->pBd4->setText(QString::number((all_d_para[i]*METER2MM),'g',5)); i++;
-    ui->pBtheta4->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
-    ui->pBbeta4->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
+    ui->pBalpha2->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
+    ui->pBa2->setText(QString::number((all_d_para[i]*METER2MM),'f',5)); i++;
+    ui->pBd2->setText(QString::number((all_d_para[i]*METER2MM),'f',5)); i++;
+    ui->pBtheta2->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
+    ui->pBbeta2->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
 
-    ui->pBalpha5->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
-    ui->pBa5->setText(QString::number((all_d_para[i]*METER2MM),'g',5)); i++;
-    ui->pBd5->setText(QString::number((all_d_para[i]*METER2MM),'g',5)); i++;
-    ui->pBtheta5->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
-    ui->pBbeta5->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
+    ui->pBalpha3->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
+    ui->pBa3->setText(QString::number((all_d_para[i]*METER2MM),'f',5)); i++;
+    ui->pBd3->setText(QString::number((all_d_para[i]*METER2MM),'f',5)); i++;
+    ui->pBtheta3->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
+    ui->pBbeta3->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
 
-    ui->pBalpha6->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
-    ui->pBa6->setText(QString::number((all_d_para[i]*METER2MM),'g',5)); i++;
-    ui->pBd6->setText(QString::number((all_d_para[i]*METER2MM),'g',5)); i++;
-    ui->pBtheta6->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
-    ui->pBbeta6->setText(QString::number((all_d_para[i]*r2D),'g',5)); i++;
+    ui->pBalpha4->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
+    ui->pBa4->setText(QString::number((all_d_para[i]*METER2MM),'f',5)); i++;
+    ui->pBd4->setText(QString::number((all_d_para[i]*METER2MM),'f',5)); i++;
+    ui->pBtheta4->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
+    ui->pBbeta4->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
+
+    ui->pBalpha5->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
+    ui->pBa5->setText(QString::number((all_d_para[i]*METER2MM),'f',5)); i++;
+    ui->pBd5->setText(QString::number((all_d_para[i]*METER2MM),'f',5)); i++;
+    ui->pBtheta5->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
+    ui->pBbeta5->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
+
+    ui->pBalpha6->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
+    ui->pBa6->setText(QString::number((all_d_para[i]*METER2MM),'f',5)); i++;
+    ui->pBd6->setText(QString::number((all_d_para[i]*METER2MM),'f',5)); i++;
+    ui->pBtheta6->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
+    ui->pBbeta6->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
 
 }
 
+void MainWindow::showToolpara()
+{
+    // show criter data
+    double  output_criter[3];
+    kc->getCriter(output_criter);
+    ui->lEMax->setText(QString::number((output_criter[0]*METER2MM),'g',4));
+    ui->lEMean->setText(QString::number((output_criter[1]*METER2MM),'g',4));
+    ui->lERMS->setText(QString::number((output_criter[2]*METER2MM),'g',4));
+    // show tool and measurement para
+
+    ui->lETx->setText(QString::number(kc->getToolPara("Tx")*METER2MM,'g',4));//in mm
+    ui->lETy->setText(QString::number(kc->getToolPara("Ty")*METER2MM,'g',4));
+    ui->lETz->setText(QString::number(kc->getToolPara("Tz")*METER2MM,'g',4));
+
+    ui->lEMx->setText(QString::number(kc->getToolPara("Mx")*METER2MM,'g',4));
+    ui->lEMy->setText(QString::number(kc->getToolPara("My")*METER2MM,'g',4));
+    ui->lEMz->setText(QString::number(kc->getToolPara("Mz")*METER2MM,'g',4));
+
+    if(kc->kc_cali_method_ == CALI_LEICA)
+    {
+        ui->lEMRx->setText(QString::number(kc->getToolPara("MRx")*r2D,'g',4));
+        ui->lEMRy->setText(QString::number(kc->getToolPara("MRy")*r2D,'g',4));
+        ui->lEMRz->setText(QString::number(kc->getToolPara("MRz")*r2D,'g',4));
+    }
+    else
+    {
+        ui->lEMRx->setText(QString::number(0));
+        ui->lEMRy->setText(QString::number(0));
+        ui->lEMRz->setText(QString::number(0));
+    }
+}
 
 void MainWindow::on_pBrestart_clicked()
 {
@@ -239,45 +281,32 @@ void MainWindow::on_pBrestart_clicked()
     ui->pBbeta4->setText("beta4");
     ui->pBbeta5->setText("beta5");
     ui->pBbeta6->setText("beta6");
+
+
+    ui->lEMRx->setText(QString::number(0));
+    ui->lEMRy->setText(QString::number(0));
+    ui->lEMRz->setText(QString::number(0));
+
+    ui->lETx->setText(QString::number(0));
+    ui->lETx->setText(QString::number(0));
+    ui->lETx->setText(QString::number(0));
+
+    ui->lEMx->setText(QString::number(0));
+    ui->lEMx->setText(QString::number(0));
+    ui->lEMx->setText(QString::number(0));
+
+    ui->lEMax->setText(QString::number(0));
+    ui->lEMean->setText(QString::number(0));
+    ui->lERMS->setText(QString::number(0));
 }
 
 void MainWindow::on_pBoutputresult_clicked()
 {
-//    std::string pathOne = ui->labelDatapath->text().toStdString()+ '/' + ui->cBDatadir->currentText().toStdString() + '/';
-        std::string pathOne = ui->labelDatapath->text().toStdString()+ '/' ;
+    //    std::string pathOne = ui->labelDatapath->text().toStdString()+ '/' + ui->cBDatadir->currentText().toStdString() + '/';
+    std::string pathOne = ui->labelDatapath->text().toStdString()+ '/' ;
     std::string data_file = ui->cBDatadir->currentText().toStdString();
     kc->outputClibrationDPara(pathOne,data_file);
     //out put data;
 }
 
-void MainWindow::showToolpara()
-{
-    // show criter data
-    double  output_criter[3];
-    kc->getCriter(output_criter);
-    ui->lEMax->setText(QString::number((output_criter[0]*METER2MM),'g',5));
-    ui->lEMean->setText(QString::number((output_criter[1]*METER2MM),'g',5));
-    ui->lERMS->setText(QString::number((output_criter[2]*METER2MM),'g',5));
-    // show tool and measurement para
 
-    ui->lETx->setText(QString::number(kc->getToolPara("Tx")*METER2MM,'g',5));//in mm
-    ui->lETy->setText(QString::number(kc->getToolPara("Ty")*METER2MM,'g',5));
-    ui->lETz->setText(QString::number(kc->getToolPara("Tz")*METER2MM,'g',5));
-
-    ui->lEMx->setText(QString::number(kc->getToolPara("Mx")*METER2MM,'g',5));
-    ui->lEMy->setText(QString::number(kc->getToolPara("My")*METER2MM,'g',5));
-    ui->lEMz->setText(QString::number(kc->getToolPara("Mz")*METER2MM,'g',5));
-
-    if(kc->cali_method_ == CALI_LEICA)
-    {
-        ui->lEMRx->setText(QString::number(kc->getToolPara("MRx")*r2D,'g',5));
-        ui->lEMRy->setText(QString::number(kc->getToolPara("MRy")*r2D,'g',5));
-        ui->lEMRz->setText(QString::number(kc->getToolPara("MRz")*r2D,'g',5));
-    }
-    else
-    {
-        ui->lEMRx->setText(QString::number(0));
-        ui->lEMRy->setText(QString::number(0));
-        ui->lEMRz->setText(QString::number(0));
-    }
-}

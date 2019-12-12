@@ -16,13 +16,10 @@ using namespace std;
 
 
 #define MAX_IDEN_PARA_NUM 40  //maximum identification parameter number, all dh para;
-
 #define DOF 6
 #define POSITION_DOF 3
-
 #define D2r M_PI/180
 #define r2D 180/M_PI
-
 #define MM2METER 1.0/1000.0
 #define METER2MM 1000.0
 
@@ -74,26 +71,19 @@ public:
     virtual bool loadInputJointAngle(const std::string&  datafile) = 0;
     virtual void loadInputToolData(const std::string&  datafile) = 0;
 
-    virtual bool estParaOfFrame() = 0;
     virtual void getFrameParaJacobian(double& Se, RMatrix& Je, RVector& Fe, RVector& mt_para, RVector& measure_data_i, RVector& joint_i) = 0;
 
-    virtual void GetEleIdentifyMatrix(RVector& Phai_i, RVector& Fe_i, RVector& measure_data_i, RVector& joint_i) = 0;//all para include dh tool and measure
-
-    virtual void GetIdentifyMatrix(RMatrix& Phai, RVector& Fe, double& Eerror) = 0;
-
-    virtual bool getIncrePara(RVector& d_para, double& Eerror_last) = 0;
+    virtual void GetEleIdentifyMatrix(RMatrix& Phai_i, RVector& Fe_i, RVector& measure_data_i, RVector& joint_i) = 0;//all para include dh tool and measure
 
     virtual bool calError() = 0;
 
-    RVector updataAlldPara(const RVector& d_para);
+    bool estParaOfFrame();
 
 
-protected:
-    int data_dim_;//measure dim;
-    int measure_data_length_;
-    std::vector<vector<double> > measure_data_;
-    std::vector<vector<double> > input_joint_angle_;
-    RobotKinematics *rk;
+    void GetIdentifyMatrix(RMatrix& Phai, RVector& Fe);
+
+    bool getIncrePara(RVector& d_para);
+    RVector calAllDpara(const RVector& d_para);
 
 public:
     bool check_flag_[MAX_IDEN_PARA_NUM];
@@ -108,9 +98,19 @@ public:
     PARA cali_para_;
     PARA nom_cali_para_;
 
-    CRITER criter_befor;
-    CRITER criter_after;
+    CRITER criter_after_;
+
+    CALIBRATE_METHOD cali_method_;
+
+protected:
+    int data_dim_;//measure dim;
+    int measure_data_length_;
+    std::vector<vector<double> > measure_data_;
+    std::vector<vector<double> > input_joint_angle_;
+    RobotKinematics *rk;
 };
+
+
 
 template <class Type>
 Type stringtoNum(const string& str)

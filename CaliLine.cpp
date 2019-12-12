@@ -161,200 +161,198 @@ void CaliLine::loadInputToolData(const std::string&  datafile)
     cali_para_.measurement_para.z = temp[0][2]/MM2METER;
 }
 
-bool CaliLine::estParaOfFrame()
-{
-    // input : DHPARA
-    // OUTPUT : X Y Z r p y
-//    getFrameParaJacobian();
-    double c1, c2, lamda, rho, sigma, a, b;
-    int groupSz, iters, loops, data_index, s;
+//bool CaliLine::estParaOfFrame()
+//{
+//    // input : DHPARA
+//    // OUTPUT : X Y Z r p y
+////    getFrameParaJacobian();
+//    double c1, c2, lamda, rho, sigma, a, b;
+//    int groupSz, iters, loops, data_index, s;
 
-    c1 = 0.1;
-    c2 = 0.7;
-    lamda = 1.0;
-    groupSz = 11;
-    iters = 200;
-    data_index = -1;
+//    c1 = 0.1;
+//    c2 = 0.7;
+//    lamda = 1.0;
+//    groupSz = 11;
+//    iters = 200;
+//    data_index = -1;
 
-    RVector Pbm_c(3), Pft_c(3), Pbm(3), Pft(3);
-    Pbm.setZero();
-    Pft.setZero();
+//    RVector Pbm_c(3), Pft_c(3), Pbm(3), Pft(3);
+//    Pbm.setZero();
+//    Pft.setZero();
 
-    double Se_i, Se, Se_plus;
-    RMatrix Je(groupSz,para_mt_num_), hS, hS_inv(para_mt_num_,para_mt_num_), Je_i(data_dim_,para_mt_num_);
+//    double Se_i, Se, Se_plus;
+//    RMatrix Je(groupSz,para_mt_num_), hS, hS_inv(para_mt_num_,para_mt_num_), Je_i(data_dim_,para_mt_num_);
 
-    RVector gS(para_mt_num_), gS_plus(para_mt_num_), dk;
-    RVector Fe_i(data_dim_), Fe(groupSz * data_dim_);
-    RVector measure_data_i(data_dim_), joint_i(DOF);
-    RVector mt_para(9);
-    while(iters--)
-    {
-        for(int i = 0; i < measure_data_length_; i++)
-        {
-            if(i == measure_data_length_-1)
-                bool sss = 0;
+//    RVector gS(para_mt_num_), gS_plus(para_mt_num_), dk;
+//    RVector Fe_i(data_dim_), Fe(groupSz * data_dim_);
+//    RVector measure_data_i(data_dim_), joint_i(DOF);
+//    RVector mt_para(9);
+//    while(iters--)
+//    {
+//        for(int i = 0; i < measure_data_length_; i++)
+//        {
+//            if(i == measure_data_length_-1)
+//                bool sss = 0;
 
-            data_index = data_index +1;
+//            data_index = data_index +1;
 
-            if(data_index >= measure_data_length_)
-                data_index = data_index - measure_data_length_;
+//            if(data_index >= measure_data_length_)
+//                data_index = data_index - measure_data_length_;
 
-           if((data_index + 1)%groupSz == 1)
-           {
-               Je.clear();
-               Fe.setZero();
-               Se = 0;
-               s = 0;
-           }
+//           if((data_index + 1)%groupSz == 1)
+//           {
+//               Je.clear();
+//               Fe.setZero();
+//               Se = 0;
+//               s = 0;
+//           }
 
-           measure_data_i(0) = measure_data_[data_index][0];
-           for(int k = 0; k < 6; k++)
-           {
-               joint_i(k) = input_joint_angle_[data_index][k];
-           }
+//           measure_data_i(0) = measure_data_[data_index][0];
+//           for(int k = 0; k < 6; k++)
+//           {
+//               joint_i(k) = input_joint_angle_[data_index][k];
+//           }
 
-           for(int kk = 0; kk < 3; kk++)
-           {
-               mt_para(kk) = Pbm(kk);
-               mt_para(kk+3) = 0;
-               mt_para(kk+6) = Pft(kk);
-           }
-           getFrameParaJacobian(Se_i, Je_i, Fe_i, mt_para, measure_data_i, joint_i);
+//           for(int kk = 0; kk < 3; kk++)
+//           {
+//               mt_para(kk) = Pbm(kk);
+//               mt_para(kk+3) = 0;
+//               mt_para(kk+6) = Pft(kk);
+//           }
+//           getFrameParaJacobian(Se_i, Je_i, Fe_i, mt_para, measure_data_i, joint_i);
 
-           Se = Se + Se_i;
-           for(int p = 0; p < para_mt_num_; p++)
-               Je(s,p) = Je_i(0,p);
-           Fe(s) = Fe_i(0);
-           s++;
+//           Se = Se + Se_i;
+//           for(int p = 0; p < para_mt_num_; p++)
+//               Je(s,p) = Je_i(0,p);
+//           Fe(s) = Fe_i(0);
+//           s++;
 
-           if((data_index + 1) % groupSz == 0)
-           {
-//               Je.show();
-//               Fe.show();
+//           if((data_index + 1) % groupSz == 0)
+//           {
+////               Je.show();
+////               Fe.show();
 
-               hS = Je.transpose()*Je*2;
-               gS = Je.transpose()*Fe*2;
+//               hS = Je.transpose()*Je*2;
+//               gS = Je.transpose()*Fe*2;
 
-//               hS.show("HS");
-//               gS.show("GS");
-               bool flag = hS.inverse(hS_inv);
-               if(flag)
-                   dk = (hS_inv * gS)*(-1);
-               else
-                   return false;
+////               hS.show("HS");
+////               gS.show("GS");
+//               bool flag = hS.inverse(hS_inv);
+//               if(flag)
+//                   dk = (hS_inv * gS)*(-1);
+//               else
+//                   return false;
 
-//               dk.show("dk");
+////               dk.show("dk");
 
-               rho = 0.1;
-               sigma = 0.7;
+//               rho = 0.1;
+//               sigma = 0.7;
 
-               srand(time(NULL));
-               lamda = (rand() % 9) * 0.1 + 0.1;
+//               srand(time(NULL));
+//               lamda = (rand() % 9) * 0.1 + 0.1;
 
-//               lamda = 0.3;
-               a = 0.0;
-               b = INFINITY;
-               loops = 0;
-               while(1)
-               {
-                   loops = loops + 1;
-                   Je.clear();
-                   Fe.setZero();
-                   Se_plus = 0;
-                   s = 0;
+////               lamda = 0.3;
+//               a = 0.0;
+//               b = INFINITY;
+//               loops = 0;
+//               while(1)
+//               {
+//                   loops = loops + 1;
+//                   Je.clear();
+//                   Fe.setZero();
+//                   Se_plus = 0;
+//                   s = 0;
 
-                   for(int ii = data_index + 1 - groupSz; ii < data_index+1; ii++)
-                   {
-                       measure_data_i(0) = measure_data_[ii][0];
-                       for(int k = 0; k < 6; k++)
-                       {
-                           joint_i(k) = input_joint_angle_[ii][k];
-                       }
+//                   for(int ii = data_index + 1 - groupSz; ii < data_index+1; ii++)
+//                   {
+//                       measure_data_i(0) = measure_data_[ii][0];
+//                       for(int k = 0; k < 6; k++)
+//                       {
+//                           joint_i(k) = input_joint_angle_[ii][k];
+//                       }
 
-                       for(int r = 0; r < 3; r++)
-                       {
-                           Pbm_c(r) = Pbm(r) + lamda*dk(r);
-                           Pft_c(r) = Pft(r) + lamda*dk(r+3);
-                       }
+//                       for(int r = 0; r < 3; r++)
+//                       {
+//                           Pbm_c(r) = Pbm(r) + lamda*dk(r);
+//                           Pft_c(r) = Pft(r) + lamda*dk(r+3);
+//                       }
 
-//                       Pbm_c.show("Pbm_c");
-//                       Pft_c.show("Pft_c");
-                       for(int kk = 0; kk < 3; kk++)
-                       {
-                           mt_para(kk) = Pbm_c(kk);
-                           mt_para(kk+3) = 0;
-                           mt_para(kk+6) = Pft_c(kk);
-                       }
+////                       Pbm_c.show("Pbm_c");
+////                       Pft_c.show("Pft_c");
+//                       for(int kk = 0; kk < 3; kk++)
+//                       {
+//                           mt_para(kk) = Pbm_c(kk);
+//                           mt_para(kk+3) = 0;
+//                           mt_para(kk+6) = Pft_c(kk);
+//                       }
 
-                       getFrameParaJacobian(Se_i, Je_i, Fe_i, mt_para,  measure_data_i, joint_i);
+//                       getFrameParaJacobian(Se_i, Je_i, Fe_i, mt_para,  measure_data_i, joint_i);
 
-                       Se_plus = Se_plus + Se_i;
+//                       Se_plus = Se_plus + Se_i;
 
-                       for(int p = 0; p < para_mt_num_; p++)
-                           Je(s,p) = Je_i(0,p);
-                       Fe(s) = Fe_i(0);
-                       s++;
-                   }
+//                       for(int p = 0; p < para_mt_num_; p++)
+//                           Je(s,p) = Je_i(0,p);
+//                       Fe(s) = Fe_i(0);
+//                       s++;
+//                   }
 
-                   gS_plus = Je.transpose()*Fe*2;
+//                   gS_plus = Je.transpose()*Fe*2;
 
-//                   double aa = gS.dot(dk);
-//                   double bb = gS_plus.dot(dk);
-//                   double cc = Se + gS.dot(dk) * rho*lamda;
+////                   double aa = gS.dot(dk);
+////                   double bb = gS_plus.dot(dk);
+////                   double cc = Se + gS.dot(dk) * rho*lamda;
 
-                   if(!(Se_plus <= Se + gS.dot(dk) * rho*lamda))
-                   {
-                       b = lamda;
-                       lamda = (lamda + a)/2;
-                       continue;
-                   }
-                   if(!(gS_plus.dot(dk) >= gS.dot(dk)*sigma))
-                   {
-                       a = lamda;
-                       lamda = std::min(2*lamda,(b + lamda)/2);
-                       continue;
-                   }
-                   break;
-               }
-               dk = dk*lamda;
-//               dk.show("dk2");
+//                   if(!(Se_plus <= Se + gS.dot(dk) * rho*lamda))
+//                   {
+//                       b = lamda;
+//                       lamda = (lamda + a)/2;
+//                       continue;
+//                   }
+//                   if(!(gS_plus.dot(dk) >= gS.dot(dk)*sigma))
+//                   {
+//                       a = lamda;
+//                       lamda = std::min(2*lamda,(b + lamda)/2);
+//                       continue;
+//                   }
+//                   break;
+//               }
+//               dk = dk*lamda;
+////               dk.show("dk2");
 
-               for(int r = 0; r < 3; r++)
-               {
-                   Pbm(r) = Pbm(r) + dk(r);
-                   Pft(r) = Pft(r) + dk(r+3);
-               }
-//               Pbm.show("Pbm");
-//               Pft.show("Pft");
+//               for(int r = 0; r < 3; r++)
+//               {
+//                   Pbm(r) = Pbm(r) + dk(r);
+//                   Pft(r) = Pft(r) + dk(r+3);
+//               }
+////               Pbm.show("Pbm");
+////               Pft.show("Pft");
 
-           }
-        }
-    }
+//           }
+//        }
+//    }
 
-    cali_para_.measurement_para.x = Pbm(0);
-    cali_para_.measurement_para.y = Pbm(1);
-    cali_para_.measurement_para.z = Pbm(2);
+//    cali_para_.measurement_para.x = Pbm(0);
+//    cali_para_.measurement_para.y = Pbm(1);
+//    cali_para_.measurement_para.z = Pbm(2);
 
-    cali_para_.tool_para.x = Pft(0);
-    cali_para_.tool_para.y = Pft(1);
-    cali_para_.tool_para.z = Pft(2);
-    return true;
-}
+//    cali_para_.tool_para.x = Pft(0);
+//    cali_para_.tool_para.y = Pft(1);
+//    cali_para_.tool_para.z = Pft(2);
+//    return true;
+//}
 
 void CaliLine::getFrameParaJacobian(double& Se, RMatrix& Je, RVector& Fe, RVector& mt_para, RVector& measure_data_i, RVector& joint_i)
 {
     // input DHPARA xyz rpy pt
     RMatrix Teye = RMatrix::eye(3);
     RMatrix Tbf(4);
-    RVector Pbt(3), Pmt(3), Pbm(3), Pft(3), rpy(3);
+    RVector Pbt(3), Pmt(3), Pbm(3), Pft(3);
     std::vector<RVector> J(para_mt_num_);
     for(int i = 0; i < 3; i++)
     {
         Pbm(i) = mt_para(i);
-        rpy(i) = mt_para(i+3);
-        Pft(i) = mt_para(i+6);
+        Pft(i) = mt_para(i+3);
     }
-
 
     Tbf = rk->fKFlangeInBase(cali_para_.dh_para, joint_i);
     Pbt = Tbf.subMatrix(0,2,0,2)*Pft + Tbf.subVector(0,2,3,COL);
@@ -386,13 +384,13 @@ void CaliLine::getFrameParaJacobian(double& Se, RMatrix& Je, RVector& Fe, RVecto
 //    Fe.show();
 }
 
-void CaliLine::GetEleIdentifyMatrix(RVector& Phai_i, RVector &Fe_i, RVector& measure_data_i, RVector& joint_i)//all para include dh tool and measure
+void CaliLine::GetEleIdentifyMatrix(RMatrix& Phai_i, RVector &Fe_i, RVector& measure_data_i, RVector& joint_i)//all para include dh tool and measure
 {
 
     RMatrix T_eye = RMatrix::eye(3);
     RMatrix Tbase = RMatrix::eye(4);
     RMatrix Ttool_f, Tadd(4);
-    RVector Pt_m(3), p_m_base(3);
+    RVector Pt_m(3), p_m_base(3), p_tool_f(3);
     std::vector<RMatrix> T_world(DOF+2), T_base(DOF+1);
     std::vector<RVector> Origen_world(DOF+2), x_world(DOF+2), y_world(DOF+2), z_world(DOF+2);
     std::vector<RVector> J;
@@ -413,7 +411,10 @@ void CaliLine::GetEleIdentifyMatrix(RVector& Phai_i, RVector &Fe_i, RVector& mea
     p_m_base(0) = cali_para_.measurement_para.x;
     p_m_base(1) = cali_para_.measurement_para.y;
     p_m_base(2) = cali_para_.measurement_para.z;
-    double p_tool_f[] = {cali_para_.tool_para.x, cali_para_.tool_para.y, cali_para_.tool_para.z};
+
+    p_tool_f(0) = cali_para_.tool_para.x;
+    p_tool_f(1) = cali_para_.tool_para.y;
+    p_tool_f(2) = cali_para_.tool_para.z;
 
 
     T_base[0] = Tbase;
@@ -471,125 +472,12 @@ void CaliLine::GetEleIdentifyMatrix(RVector& Phai_i, RVector &Fe_i, RVector& mea
 
     for(int i = 0; i < para_total_num_; i++)
     {
-        Phai_i(i) = 0;
+        Phai_i(0,i) = 0;
         for(int j = 0; j < POSITION_DOF; j++)
-            Phai_i(i) =  2 * Pt_m(j) * J[i](j) + Phai_i(i);
+            Phai_i(0,i) =  2 * Pt_m(j) * J[i](j) + Phai_i(0,i);
     }
 
     Fe_i(0) = Pt_m.dot(Pt_m) - measure_data_i.dot(measure_data_i);
-}
-
-void CaliLine::GetIdentifyMatrix(RMatrix& Phai, RVector& Fe, double& Eerror)
-{
-
-    RVector Phai_i(para_total_num_), Fe_i(data_dim_);
-    RVector measure_data_i(data_dim_), joint_i(DOF);
-
-    for(int i = 0; i < measure_data_length_; i++)
-    {
-        measure_data_i(0) = measure_data_[i][0];
-        for(int k = 0; k < 6; k++)
-        {
-            joint_i(k) = input_joint_angle_[i][k];
-        }
-
-        GetEleIdentifyMatrix(Phai_i, Fe_i, measure_data_i, joint_i);
-
-//        Phai_i.show("Phai_i");
-//        Fe_i.show("Fe_i");
-
-        for(int k = 0; k < para_total_num_; k++)
-        {
-            Phai(i,k) = Phai_i(k);
-        }
-        Fe(i) = Fe_i(0);
-    }
-    Eerror = Fe.norm();
-}
-
-bool CaliLine::getIncrePara(RVector& d_para, double& Eerror_last)
-{
-    RMatrix Phai_m(measure_data_length_,para_total_num_);
-    RVector Line_v(measure_data_length_), Rii(para_total_num_);
-    RMatrix Q_phai, R_phai;
-
-    GetIdentifyMatrix(Phai_m, Line_v, Eerror_last);
-
-    Phai_m.qrDec(Q_phai,R_phai);
-
-    Rii = R_phai.getDiagVector();
-
-//Phai_m.show("Phai_m");
-//    Rii.show("Rii");
-//    R_phai.show("R_phai");
-    double qr_rii = 1e-8;
-    int emptyCol_num = 0;
-
-    bool check[MAX_IDEN_PARA_NUM];
-    for(int i = 0; i < para_total_num_; i++)
-        check[i] = true;
-
-    // tool para
-    for(int i = 0; i < para_mt_num_; i++)
-    {
-        if(fabs(Rii(i)) < qr_rii)
-        {
-            check[i] = false;
-            emptyCol_num++;
-            check_flag_[i] = false;
-        }
-    }
-    // dhpara
-    for (int i = 0; i < DOF; i++)
-    {
-        for(int j = 0; j < GN_; j++)
-        {
-            if(fabs(Rii(para_mt_num_ + GN_*i + j)) < qr_rii)
-            {
-                check[para_mt_num_ + GN_*i + j] = false;
-
-                emptyCol_num++;
-                if(calibration_beta_)
-                    check_flag_[para_mt_num_ + GN_*i + j] = false;
-                else
-                    check_flag_[para_mt_num_ + (GN_ + 1)*i + j] = false;
-            }
-        }
-    }
-
-    calibration_para_num_ = para_total_num_ - emptyCol_num;
-
-    RMatrix Phai(measure_data_length_,calibration_para_num_);
-    RMatrix hS_inv(calibration_para_num_,calibration_para_num_);
-    RMatrix hS(calibration_para_num_,calibration_para_num_);
-    int m = 0;
-    for(int j = 0; j < para_total_num_; j++)
-    {
-        if(check[j])
-        {
-            for(int k = 0; k < measure_data_length_; k++)
-                Phai(k,m) = Phai_m(k,j);
-            m++;
-        }
-    }
-
-//    Phai.show("Phai");
-
-    hS = Phai.transpose()*Phai;
-    RVector gS = Phai.transpose()*Line_v;
-//    hS.show("hS");
-
-    bool flag = hS.inverse(hS_inv);
-
-    if(flag)
-    {
-        d_para = (hS_inv * gS)*(-1);
-        d_para.show("d_para");
-    }
-    else
-        return false;
-
-    return true;
 }
 
 bool CaliLine::calError()
@@ -608,7 +496,7 @@ bool CaliLine::calError()
     Pft(1) = cali_para_.tool_para.y;
     Pft(2) = cali_para_.tool_para.z;
 
-    double py[3] = {0,0,0};
+    RVector py(3);
 
     for(int i = 0; i < measure_data_length_; i++)
     {
@@ -648,9 +536,9 @@ bool CaliLine::calError()
     if(c_max == 0)
         return false;
 
-    criter_after.maxvalue = c_max;
-    criter_after.meanvalue = c_sum / measure_data_length_;
-    criter_after.rmsvalue = sqrt((Fe.dot(Fe)) / measure_data_length_);
+    criter_after_.maxvalue = c_max;
+    criter_after_.meanvalue = c_sum / measure_data_length_;
+    criter_after_.rmsvalue = sqrt((Fe.dot(Fe)) / measure_data_length_);
 
     return true;
 }

@@ -1,53 +1,53 @@
 #include "kinematicscalibration.h"
 
-template <class Type>
-Type stringtoNum(const string& str)
+static inline std::string cp_str(CALIBRATE_PARA dpara)
 {
-    istringstream iss(str);
-    Type num;
-    iss >> num;
-    return num;
-}
-
-static inline char * cp_str(CALIBRATE_PARA dpara)
-{
-    static char *strings[] = {"ALPHA1","A1","THETA1","D1","BETA1",
-                              "ALPHA2","A2","THETA2","D2","BETA2",
-                              "ALPHA3","A3","THETA3","D3","BETA3",
-                              "ALPHA4","A4","THETA4","D4","BETA4",
-                              "ALPHA5","A5","THETA5","D5","BETA5",
-                              "ALPHA6","A6","THETA6","D6","BETA6",};
-    return strings[dpara];
+    static std::string str[] = {"ALPHA1","A1","THETA1","D1","BETA1",
+                                "ALPHA2","A2","THETA2","D2","BETA2",
+                                "ALPHA3","A3","THETA3","D3","BETA3",
+                                "ALPHA4","A4","THETA4","D4","BETA4",
+                                "ALPHA5","A5","THETA5","D5","BETA5",
+                                "ALPHA6","A6","THETA6","D6","BETA6",};
+    return str[dpara];
 }
 
 KinematicsCalibration::KinematicsCalibration()
 {
-    rk = new RobotKinematics();
+    // initiall all para: calitype;dhpara beta,chekflag;
+    cali_line = new CaliLine();
+    cali_leica = new CaliLeica();
 
-    for(int i = 0; i < MAX_IDEN_PARA_NUM; i++)
-        check_flag_[i] = false;
-    calibration_beta_ = false;
+    kc_cali_method_ = CALI_LINE;
+    cali_type = cali_line;
+
+    rk = new RobotKinematics();
+    cali_type->calibration_beta_ = false;
 }
 
 KinematicsCalibration::~KinematicsCalibration()
 {
     delete rk;
+    delete cali_line;
+    delete cali_leica;
 }
-
 
 void KinematicsCalibration::initiallDHPara()
 {
     double a2, a3, d1, d2, d5, d6;
     rk->getRobotDHPara(a2, a3, d1, d2, d5, d6);
     // alpha a theta d beta
-    double temp1[MAX_IDEN_PARA_NUM] = {0      ,0  ,M_PI   ,d1,0,
-                                       -M_PI/2,0  ,-M_PI/2,d2,0,
-                                       M_PI   ,a2 ,0      ,0 ,0,
-                                       M_PI   ,a3 ,-M_PI/2,0 ,0,
-                                       -M_PI/2,0  ,0      ,d5,0,
-                                       M_PI/2 ,0  ,0      ,d6,0};
+    double temp1[4*DOF] = {0      , 0 , d1, M_PI   ,
+                           -M_PI/2, 0 , d2, -M_PI/2,
+                           M_PI   , a2, 0 , 0      ,
+                           M_PI   , a3, 0 , -M_PI/2,
+                           -M_PI/2, 0 , d5, 0      ,
+                           M_PI/2 , 0 , d6, 0      };
 
-    memcpy(all_dh_para_,temp1,sizeof(temp1));
+    memcpy(cali_type->cali_para_.dh_para,temp1,sizeof(temp1));
+    for (int i = 0; i < DOF; i++)
+    {
+        cali_type->cali_para_.beta[i] = 0;
+    }
 }
 
 void KinematicsCalibration::setRobotDHPara(ROBOT_TYPE type)
@@ -55,171 +55,238 @@ void KinematicsCalibration::setRobotDHPara(ROBOT_TYPE type)
     rk->setRobotDHPara(type);
 }
 
-void KinematicsCalibration::setCalibrationBeta(bool value)
+//?
+void KinematicsCalibration::setCaliType(const std::string& type)
 {
-    calibration_beta_ = value;
+    if(type == "Line")
+    {
+        kc_cali_method_ = CALI_LINE;
+    }
+    else
+    {
+        kc_cali_method_ = CALI_LEICA;
+    }
 }
 
-void KinematicsCalibration::loadMeasuredData(std::string  datafile)
+void KinematicsCalibration::getCaliType()
 {
-    ifstream afile;
-    std::string filename = "/DynaCal1.msr";
-    //read measure line data
-    std::string totalPathName = datafile + filename;
+    cali_type->cali_method_ = kc_cali_method_;
+}
 
-    afile.open(totalPathName.data());
-    if(!afile)
-        cout<<"Open File Fail!"<<endl;
-    std::string s;
-    double count = 0;
-    int i = 0;
-    while(getline(afile,s))
+void KinematicsCalibration::setCalibrationBeta(bool value)
+{
+    kc_cali_beta_ = value;
+}
+
+void KinematicsCalibration::getCalibrationBeta()
+{
+    cali_type->calibration_beta_ = kc_cali_beta_;
+}
+
+bool KinematicsCalibration::LoadData(const std::string& datafile)
+{
+    cali_type->loadMeasuredData(datafile);
+    cali_type->loadInputJointAngle(datafile);
+    //    cali_type->loadInputToolData(datafile);
+
+    return true;
+}
+
+void KinematicsCalibration::setPara()
+{
+    // set calitype
+    getCaliType();
+
+    if(cali_type->cali_method_ == CALI_LINE)
     {
-        try
-        {
-            count = stringtoNum<double>(s);
-        }
-        catch(...)
-        {
-            cout<<"file format error";
-            return ;
-        }
-
-        if(i == 0)
-        {
-            measure_data_length_ = (int)count;
-            measure_line_data_.resize(measure_data_length_);
-        }
-        else if(i == measure_data_length_ + 1)
-            break;
-        else
-            measure_line_data_[i-1] = count/MM2METER;
-        i++;
-
+        cali_type = cali_line;
+        cali_type->cali_method_ = CALI_LINE;
     }
-    afile.close();
+    if(cali_type->cali_method_ == CALI_LEICA)
+    {
+        cali_type = cali_leica;
+        cali_type->cali_method_ = CALI_LEICA;
+    }
+
+    // set calibeta;
+    getCalibrationBeta();
+    // set dhpara
+    initiallDHPara();
+    // ALL para num include beta
+    cali_type->All_para_num_ = cali_type->para_mt_num_ + 5*DOF;
+
+    // initiall check_flag_;
+    for(int i = 0; i < cali_type->All_para_num_; i++)
+        cali_type->check_flag_[i] = true;
+
+    // set dh para num;
+    if(cali_type->calibration_beta_)
+    {
+        cali_type->GN_ = 5;
+    }
+    else
+    {
+        for(int i = 0; i < DOF; i++)
+            cali_type->check_flag_[cali_type->para_mt_num_ + 4 + 5*i] = false;
+        cali_type->GN_ = 4;
+    }
+
+    // set all para num
+    cali_type->para_total_num_ = cali_type->para_mt_num_ + DOF * cali_type->GN_;
+}
+
+bool KinematicsCalibration::calibration()
+{
+    // est frame para and update tool para
+    RVector d_para;
+    double error;
+    cali_type->estParaOfFrame();// set tool para;
+    cali_type->getIncrePara(d_para);
+    d_allpara = cali_type->calAllDpara(d_para);
+    calAllPara();
+    d_allpara.show("d_allpara");
+
+    updateMemberPara();
+
+    bool flag = cali_type->calError();
+
+    std::cout<<"error_last"<<error<<endl;
+
+    return true;
+}
+
+void KinematicsCalibration::calAllPara()
+{
+    int i = 0;
+    all_para_[i] = cali_type->cali_para_.measurement_para.x + d_allpara(i); i++;
+    all_para_[i] = cali_type->cali_para_.measurement_para.y + d_allpara(i); i++;
+    all_para_[i] = cali_type->cali_para_.measurement_para.z + d_allpara(i); i++;
+
+    if(cali_type->cali_method_ == CALI_LEICA)
+    {
+        all_para_[i] = cali_type->cali_para_.measurement_rpy_para.r + d_allpara(i); i++;
+        all_para_[i] = cali_type->cali_para_.measurement_rpy_para.p + d_allpara(i); i++;
+        all_para_[i] = cali_type->cali_para_.measurement_rpy_para.y + d_allpara(i); i++;
+    }
+
+    all_para_[i] = cali_type->cali_para_.tool_para.x + d_allpara(i); i++;
+    all_para_[i] = cali_type->cali_para_.tool_para.y + d_allpara(i); i++;
+    all_para_[i] = cali_type->cali_para_.tool_para.z + d_allpara(i); i++;
+
+    for(int j = 0; j < DOF; j++)
+    {
+        for(int k = 0; k < 5; k++)
+        {
+            if(k == 4)
+            {
+                all_para_[i] = cali_type->cali_para_.beta[j] + d_allpara(i);i++;
+            }
+            else
+            {
+                all_para_[i] = cali_type->cali_para_.dh_para[4*j+k] + d_allpara(i);i++;
+            }
+        }
+    }
+}
+
+void KinematicsCalibration::getAllPara(double allpara[])
+{
+    for(int i = 0; i < cali_type->All_para_num_; i++)
+    {
+        allpara[i] = all_para_[i];
+    }
+}
+
+void KinematicsCalibration::getAllDPara(double all_d_para[])
+{
+    for(int i = 0; i < cali_type->All_para_num_; i++)
+        all_d_para[i] = d_allpara(i);
 }
 
 //output result
-void KinematicsCalibration::outputClibrationDPara(std::string  path)
+void KinematicsCalibration::outputClibrationDPara(std::string  path, std::string  data_file)
 {
     ofstream afile;
-    std::string filename = "/dpara.txt";
-    std::string totalPathName = path + filename;
+    std::string filename = data_file + '_' + "dpara.txt";
+    //    std::string totalPathName = path + filename;
+
+    std::string totalPathName = path + data_file + '/' + filename;
+
+    CALIBRATE_PARA dpara_name;
+    std::string paraname;
 
     afile.open(totalPathName.data());
     if(!afile)
         cout<<"Open File Fail!"<<endl;
+    std::string link_name;
+    int showlenth = 15;
+    int mt_num = 0;
 
-    for(int i = 0; i < 30; i++)
+    if(cali_type->cali_method_ == CALI_LINE)
+        mt_num = 6;
+    else
+        mt_num = 9;
+
+    afile<<setiosflags(ios::fixed)<<endl;
+    afile<<setprecision(5)<<std::endl;
+
+
+    afile<<left<<"D_PARA"<<"MM/DEGREE"<<std::endl;
+
+    afile<<setw(5)<<right<<"link:"<<
+           setw(showlenth)<<right<<"alpha"<<
+           setw(showlenth)<<right<<"a"<<
+           setw(showlenth)<<right<<"d"<<
+           setw(showlenth)<<right<<"theta"<<
+           setw(showlenth)<<right<<"beta"<<std::endl;
+
+    for(int j = 0; j < DOF; j++)
     {
-        dpara = (CALIBRATE_PARA) i;
+        link_name = "link" + std::to_string(j) + ':';
+        afile<<setw(5)<<right<<link_name<<
+               setw(showlenth)<<right<<d_allpara[mt_num + 5*j + 0]*r2D<<
+               setw(showlenth)<<right<<d_allpara[mt_num + 5*j + 1]*METER2MM<<
+               setw(showlenth)<<right<<d_allpara[mt_num + 5*j + 2]*METER2MM<<
+               setw(showlenth)<<right<<d_allpara[mt_num + 5*j + 3]*r2D<<
+               setw(showlenth)<<right<<d_allpara[mt_num + 5*j + 4]*r2D<<std::endl;
+    }
+    afile<<std::endl;
 
-        std::string paraname = cp_str(dpara);
-        afile<<paraname<<":"<<all_d_para_[i]<<std::endl;
+    afile<<left<<"dhPara after calibration"<<"MM/DEGREE"<<std::endl;
+
+    afile<<setw(5)<<right<<"link:"<<
+           setw(showlenth)<<right<<"alpha"<<
+           setw(showlenth)<<right<<"a"<<
+           setw(showlenth)<<right<<"d"<<
+           setw(showlenth)<<right<<"theta"<<
+           setw(showlenth)<<right<<"beta"<<std::endl;
+
+    for(int j = 0; j < DOF; j++)
+    {
+        link_name = "link" + std::to_string(j) + ':';
+        afile<<setw(5)<<right<<link_name<<
+               setw(showlenth)<<right<<all_para_[mt_num + 5*j + 0]*r2D<<
+               setw(showlenth)<<right<<all_para_[mt_num + 5*j + 1]*METER2MM<<
+               setw(showlenth)<<right<<all_para_[mt_num + 5*j + 2]*METER2MM<<
+               setw(showlenth)<<right<<all_para_[mt_num + 5*j + 3]*r2D<<
+               setw(showlenth)<<right<<all_para_[mt_num + 5*j + 4]*r2D<<std::endl;
     }
 
-    afile<<"Tx"<<":"<<all_d_para_[30]<<std::endl;
-    afile<<"Ty"<<":"<<all_d_para_[31]<<std::endl;
-    afile<<"Tz"<<":"<<all_d_para_[32]<<std::endl;
-    afile<<"Mx"<<":"<<all_d_para_[33]<<std::endl;
-    afile<<"My"<<":"<<all_d_para_[34]<<std::endl;
-    afile<<"Mz"<<":"<<all_d_para_[35]<<std::endl;
-
-    afile.close();
-}
-
-//read input joint angle
-void KinematicsCalibration::loadInputJointAngle(std::string  datafile)
-{
-    ifstream afile;
-    std::string filename = "/point60.txt";
-    std::string totalPathName = datafile + filename;
-
-    input_joint_angle_.resize(measure_data_length_);
-    for(int i = 0; i < measure_data_length_; i++)
-        input_joint_angle_[i].resize(DOF);
+    afile<<left<<"MEASUREMENT AND TOOL PARA"<<"MM"<<std::endl;
+    afile<<std::endl;
 
 
-    afile.open(totalPathName.data());
-    if(!afile)
-        cout<<"Open File Fail!"<<endl;
-    std::string sline;
-    std::string ss;
+    afile<<setw(5)<<right<<"Mx:"<<setw(showlenth)<<right<<cali_type->cali_para_.measurement_para.x*METER2MM<<std::endl;
+    afile<<setw(5)<<right<<"My:"<<setw(showlenth)<<right<<cali_type->cali_para_.measurement_para.y*METER2MM<<std::endl;
+    afile<<setw(5)<<right<<"Mz:"<<setw(showlenth)<<right<<cali_type->cali_para_.measurement_para.z*METER2MM<<std::endl;
 
-    double count = 0;
-    int j = 0;
-    while(getline(afile,sline))
-    {
-        int i = 0;
-        std::stringstream output(sline);
-        while(output>>ss)
-        {
-            if(i == 0)
-            {
-                i++;
-                continue;
-            }
-            else if(i == DOF+1)
-                break;
-            else
-            {
-                try
-                {
-                    count = stringtoNum<double>(ss);
-                }
-                catch(...)
-                {
-                    cout<<"file format error";
-                    return ;
-                }
-                input_joint_angle_[j][i-1] = count * D2r;
-                i++;
-            }
-        }
-        j++;
-    }
-    afile.close();
+    afile<<setw(5)<<right<<"Rz:"<<setw(showlenth)<<right<<cali_type->cali_para_.measurement_rpy_para.r*r2D<<std::endl;
+    afile<<setw(5)<<right<<"Ry:"<<setw(showlenth)<<right<<cali_type->cali_para_.measurement_rpy_para.p*r2D<<std::endl;
+    afile<<setw(5)<<right<<"Rx:"<<setw(showlenth)<<right<<cali_type->cali_para_.measurement_rpy_para.y*r2D<<std::endl;
 
-}
-
-void KinematicsCalibration::loadInputToolData(std::string  datafile)
-{
-    ifstream afile;
-    std::string filename = "/our_ii.dyn";
-    std::string totalPathName = datafile + filename;
-
-    afile.open(totalPathName.data());
-    if(!afile)
-        cout<<"Open File Fail!"<<endl;
-    std::string sline;
-    std::string ss;
-
-    double count = 0;
-    double temp[2][3] = {0};
-
-    for(int i = 0; i < 2; i++)
-    {
-        getline(afile,sline);
-        std::stringstream output(sline);
-        for(int j = 0; j < POSITION_DOF+1; j++)
-        {
-            output>>ss;
-            count = stringtoNum<double>(ss);
-
-            if(j == 0)
-                continue;
-            temp[i][j-1] = count;
-        }
-    }
-
-    tool_para_.x = temp[1][0]/MM2METER;
-    tool_para_.y = temp[1][1]/MM2METER;
-    tool_para_.z = temp[1][2]/MM2METER;
-
-    measurement_para_.x = temp[0][0]/MM2METER;
-    measurement_para_.y = temp[0][1]/MM2METER;
-    measurement_para_.z = temp[0][2]/MM2METER;
+    afile<<setw(5)<<right<<"Tx:"<<setw(showlenth)<<right<<cali_type->cali_para_.tool_para.x*METER2MM<<std::endl;
+    afile<<setw(5)<<right<<"Ty:"<<setw(showlenth)<<right<<cali_type->cali_para_.tool_para.y*METER2MM<<std::endl;
+    afile<<setw(5)<<right<<"Tz:"<<setw(showlenth)<<right<<cali_type->cali_para_.tool_para.z*METER2MM<<std::endl;
 
     afile.close();
 }
@@ -229,265 +296,85 @@ double KinematicsCalibration::getToolPara(std::string index)
     double ss;
 
     if(index == "Tx")
-        ss = tool_para_.x;
+        ss = cali_type->cali_para_.tool_para.x;
     else if(index == "Ty")
-        ss = tool_para_.y;
+        ss = cali_type->cali_para_.tool_para.y;
     else if(index == "Tz")
-        ss = tool_para_.z;
+        ss = cali_type->cali_para_.tool_para.z;
     else if(index == "Mx")
-        ss = measurement_para_.x;
+        ss = cali_type->cali_para_.measurement_para.x;
     else if(index == "My")
-        ss = measurement_para_.y;
+        ss = cali_type->cali_para_.measurement_para.y;
     else if(index == "Mz")
-        ss = measurement_para_.z;
+        ss = cali_type->cali_para_.measurement_para.z;
+    else if(index == "MRx")
+        ss = cali_type->cali_para_.measurement_rpy_para.y;
+    else if(index == "MRy")
+        ss = cali_type->cali_para_.measurement_rpy_para.p;
+    else if(index == "MRz")
+        ss = cali_type->cali_para_.measurement_rpy_para.r;
     else
+    {
         ; //error;
-
-}
-
-void KinematicsCalibration::getAllPara(double allpara[])
-{
-    for(int i = 0; i < MAX_IDEN_PARA_NUM; i++)
-    {
-        allpara[i] = all_para_[i];
-    }
-}
-
-void KinematicsCalibration::getAllDPara(double all_d_para[])
-{
-    for(int i = 0; i < MAX_IDEN_PARA_NUM; i++)
-    {
-        all_d_para[i] = all_para_[i] - all_dh_para_[i];
-    }
-}
-
-void KinematicsCalibration::setCheckFlag(int index, bool value)
-{
-    check_flag_[index] = value;
-}
-
-void KinematicsCalibration::GetEleIdentifyMatrix(double allPara[], int index, RVector& Phai_i, double& E_i)//all para include dh tool and measure
-{
-    RMatrix T_eye(3);
-    RVector Pt_m(3), Pm(3);
-    std::vector<RMatrix> T_base(DOF+2);
-    std::vector<RVector> Origen_base(DOF+2), x_base(DOF+2), y_base(DOF+2), z_base(DOF+2);
-    std::vector<RVector> J;
-
-    J.resize(calibration_para_num_);
-
-    double line_i = measure_line_data_[index];
-
-    Pm.value[0] = allPara[33];
-    Pm.value[1] = allPara[34];
-    Pm.value[2] = allPara[35];
-
-    T_base = rk->GetAllTransMatrixtobase(allPara, calibration_beta_);
-
-    for(int i = 0; i < DOF + 2; i++)
-    {
-        Origen_base[i] = RMatrix::subRVector(T_base[i],0,2,3,"Column");
-        x_base[i] = RMatrix::subRVector(T_base[i],0,2,0,"Column");
-        y_base[i] = RMatrix::subRVector(T_base[i],0,2,1,"Column");
-        z_base[i] = RMatrix::subRVector(T_base[i],0,2,2,"Column");
     }
 
-    int k = 0, s = 0;
+    return ss;
+}
+//read input joint angle
+void KinematicsCalibration::getCriter(double output_criter[])
+{
+    output_criter[0] = cali_type->criter_after_.maxvalue;
+    output_criter[1] = cali_type->criter_after_.meanvalue;
+    output_criter[2] = cali_type->criter_after_.rmsvalue;
+}
+
+void KinematicsCalibration::updateMemberPara()
+{
+    int i = 0;
+    cali_type->cali_para_.measurement_para.x += d_allpara(i); i++;
+    cali_type->cali_para_.measurement_para.y += d_allpara(i); i++;
+    cali_type->cali_para_.measurement_para.z += d_allpara(i); i++;
+
+    if(cali_type->cali_method_ == CALI_LEICA)
+    {
+        cali_type->cali_para_.measurement_rpy_para.r += d_allpara(i); i++;
+        cali_type->cali_para_.measurement_rpy_para.p += d_allpara(i); i++;
+        cali_type->cali_para_.measurement_rpy_para.y += d_allpara(i); i++;
+    }
+    else
+    {
+        cali_type->cali_para_.measurement_rpy_para.r = 0;
+        cali_type->cali_para_.measurement_rpy_para.p = 0;
+        cali_type->cali_para_.measurement_rpy_para.y = 0;
+    }
+
+    cali_type->cali_para_.tool_para.x += d_allpara(i); i++;
+    cali_type->cali_para_.tool_para.y += d_allpara(i); i++;
+    cali_type->cali_para_.tool_para.z += d_allpara(i); i++;
+
     for(int j = 0; j < DOF; j++)
     {
-        if(check_flag_[k++])
-            J[s++] = RVector::cross3(x_base[j],(Origen_base[DOF + 1] - Origen_base[j])); //alpha
-        if(check_flag_[k++])
-            J[s++] = x_base[j];//a
-        if(check_flag_[k++])
-            J[s++] = RVector::cross3(z_base[j+1],(Origen_base[DOF + 1] - Origen_base[j+1]));//theta
-        if(check_flag_[k++])
-            J[s++] = z_base[j+1];//d
-        if(check_flag_[k++])
-            J[s++] = RVector::cross3(y_base[j],(Origen_base[DOF + 1] - Origen_base[j])); //beta
-    }
-
-    J[s++] = x_base[DOF];
-    J[s++] = y_base[DOF];
-    J[s++] = z_base[DOF];
-
-    J[s++] = - RMatrix::subRVector(T_eye,0,2,0,"Column");
-    J[s++] = - RMatrix::subRVector(T_eye,0,2,1,"Column");
-    J[s++] = - RMatrix::subRVector(T_eye,0,2,2,"Column");
-
-
-    Pt_m = Origen_base[DOF + 1] - Pm;
-
-
-//    double N_l = Pt_m.norm(Pt_m);
-//    double d_i = line_i - Pt_m;
-
-    for(int i = 0; i < 36; i++)
-    {
-        Phai_i.value[i] = 0;
-        for(int j = 0; j < 3; j++)
-            Phai_i.value[i] =  2 * Pt_m.value[j] * J[i].value[j] + Phai_i.value[i];
-    }
-
-    E_i = line_i * line_i - (Pt_m.value[0]*Pt_m.value[0] + Pt_m.value[1]*Pt_m.value[1] + Pt_m.value[2]*Pt_m.value[2]);
-}
-
-int KinematicsCalibration::calibrationDHParaNum()
-{
-    int count = 0;
-    for(int i = 0; i < MAX_IDEN_PARA_NUM; i++)
-        count += (int)check_flag_[i];
-    int calibration_dh_para_num = count;
-
-    return calibration_dh_para_num;
-}
-
-int KinematicsCalibration::calibrationParaNum(int calibration_dh_para_num)
-{
-    int calibration_para_num = calibration_dh_para_num + 6;//dhpara + tool + measure;
-    return calibration_para_num;
-}
-
-void KinematicsCalibration::GetIdentifyMatrix(RMatrix& Phai_m, RVector& Line_v, double& Eerror)
-{
-    //    RMatrix Phai_m(measure_data_length_,calibration_para_num_);
-    //    RVector Line_v(measure_data_length_);
-    RVector Phai_i(measure_data_length_);
-    double E_i = 0;
-
-    double allpara_i[36] = {0};
-
-    memcpy(allpara_i,all_para_,sizeof(all_para_));
-
-    for(int i = 0; i < measure_data_length_; i++)
-    {
-
-        for(int j = 0; j < DOF; j++)
-            allpara_i[5*j + 2] = all_para_[5*j + 2] + input_joint_angle_[i][j];//add joint angle :THETA
-
-        GetEleIdentifyMatrix(allpara_i, i, Phai_i, E_i);
-
-        for(int k = 0; k < calibration_para_num_; k++)
+        for(int k = 0; k < 5; k++)
         {
-            Phai_m.value[i][k] = Phai_i.value[k];
-        }
-        Line_v.value[i] = E_i;
-
-    }
-
-    Eerror = RVector::norm(Line_v);
-}
-
-void KinematicsCalibration::getIncrePara(RVector& d_para, double& Eerror_last)
-{
-    RMatrix Phai_m(measure_data_length_,calibration_para_num_);
-    RVector Line_v(measure_data_length_);
-
-    RMatrix Phai_T(calibration_para_num_, measure_data_length_);
-    RMatrix Eye(Phai_m.iCol);
-
-    GetIdentifyMatrix(Phai_m, Line_v, Eerror_last);
-    Phai_T = RMatrix::RTranspose(Phai_m);
-
-    //    svdSim(Phai,RMatrix &U,RMatrix &S,RMatrix &V);
-    int mu = 0;
-    RMatrix PTP_1(calibration_para_num_, calibration_para_num_);
-    RMatrix temp1(calibration_para_num_, measure_data_length_);
-
-    bool inv = RMatrix::RMatrixInv(Phai_T*Phai_m, PTP_1, measure_data_length_);
-    if(inv)
-    {
-        temp1 = PTP_1*Phai_T;
-        d_para = temp1*Line_v;
-    }
-    else
-    {
-        ;//error;
-    }
-}
-
-void KinematicsCalibration::updataAllPara(const RVector& d_para)
-{
-    //update dhpara
-    int j = 0;
-    for(int i = 0; i < MAX_IDEN_PARA_NUM; i++)
-    {
-        if(check_flag_[i])
-        {
-            all_para_[i] += d_para.value[j];
-            j++;
+            if(k == 4)
+            {
+                cali_type->cali_para_.beta[j] += d_allpara(i);i++;
+            }
+            else
+            {
+                cali_type->cali_para_.dh_para[4*j+k] += d_allpara(i);i++;
+            }
         }
     }
-    //updata tool and measure data
-    all_para_[30] += d_para.value[calibration_para_num_-6];
-    all_para_[31] += d_para.value[calibration_para_num_-5];
-    all_para_[32] += d_para.value[calibration_para_num_-4];
-    all_para_[33] += d_para.value[calibration_para_num_-3];
-    all_para_[34] += d_para.value[calibration_para_num_-2];
-    all_para_[35] += d_para.value[calibration_para_num_-1];
 }
 
 
-bool KinematicsCalibration::calibration()
-{
-    //initiallize class member variables
-    calibration_dh_para_num_ = calibrationDHParaNum();
-    calibration_para_num_ = calibrationParaNum(calibration_dh_para_num_);
 
-    //initiall input ALLPARA
-    for(int i = 0; i < MAX_IDEN_PARA_NUM; i++)
-    {
-        all_para_[i] = all_dh_para_[i];
-    }
-    all_para_[30] = tool_para_.x;
-    all_para_[31] = tool_para_.y;
-    all_para_[32] = tool_para_.z;
 
-    all_para_[33] = measurement_para_.x;
-    all_para_[34] = measurement_para_.y;
-    all_para_[35] = measurement_para_.z;
 
-    //calculate last error
-    RVector d_para(calibration_para_num_);
 
-    double error_old = 1;
-    double error = 1;
-    int loop = 0;
-    while((error > 0.001))
-    {
-        loop++;
-        getIncrePara(d_para, error);
-        if((fabs(error_old - error) < 1e-5) || (loop > 100))
-            break;
-        error_old = error;
-        // update para
-        updataAllPara(d_para);
-    }
-    std::cout<<"error_last"<<error_old<<endl;
-    if(loop > 100)
-        return false;
-    else
-        return true;
-}
 
-void KinematicsCalibration::showdpara()
-{
-    for(int i = 0; i < 30; i++)
-    {
-        if((i%5 == 1)||(i%5 == 3))
-        {
-            all_d_para_[i] = (all_para_[i] - all_dh_para_[i]) * MM2METER; //in mm
-        }
-        else
-        {
-            all_d_para_[i] = (all_para_[i] - all_dh_para_[i])*r2D;// in degree
-        }
-    }
-    all_d_para_[30] = (all_para_[30] - tool_para_.x) * MM2METER;
-    all_d_para_[31] = (all_para_[31] - tool_para_.y) * MM2METER;
-    all_d_para_[32] = (all_para_[32] - tool_para_.z) * MM2METER;
 
-    all_d_para_[33] = (all_para_[33] - measurement_para_.x) * MM2METER;
-    all_d_para_[34] = (all_para_[34] - measurement_para_.y) * MM2METER;
-    all_d_para_[35] = (all_para_[35] - measurement_para_.z) * MM2METER;
-}
+
+
+

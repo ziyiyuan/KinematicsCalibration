@@ -188,7 +188,7 @@ RMatrix RobotKinematics::fKFlangeInBase(double dh_para[], RVector& joint)
     return T;
 }
 
-RMatrix RobotKinematics::RPToT(const RMatrix rot, double *eetrans)
+RMatrix RobotKinematics::RPToT(const RMatrix& rot, const RVector& eetrans)
 {
     RMatrix T(4,4);
     int iRow = 4;
@@ -197,7 +197,7 @@ RMatrix RobotKinematics::RPToT(const RMatrix rot, double *eetrans)
     {
        for(size_t j = 0;j < iCol-1;j++)
            T(i,j) = rot(i,j);
-        T(i,3) = eetrans[i];
+        T(i,3) = eetrans(i);
     }
     T(3,0) = 0;
     T(3,1) = 0;

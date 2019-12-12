@@ -49,7 +49,7 @@ public:
     RMatrix RotY(double t);
     RMatrix RotX(double t);
 
-    RMatrix RPToT(const RMatrix rot, double *eetrans);
+    RMatrix RPToT(const RMatrix& rot, const RVector& eetrans);
     RMatrix fKFlangeInBase(double dh_para[], RVector &joint);
 
 

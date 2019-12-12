@@ -1,0 +1,17 @@
+#ifndef CALI_LINE
+#define CALI_LINE
+
+#include "calibrationtype.h"
+
+class CaliLine:public CaliType
+{
+public:
+    CaliLine();
+    
+}
+
+
+
+
+#endif // CALILINE
+

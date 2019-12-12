@@ -33,36 +33,30 @@ public:
     KinematicsCalibration();
     ~KinematicsCalibration();
 
-    void initiallDHPara();
-
-    void setRobotDHPara(ROBOT_TYPE type);
-
     void setCaliType(const std::string& type);
+    void getCaliType();
 
     void setCalibrationBeta(bool value);
+    void getCalibrationBeta();
 
-    double getToolPara(std::string index);
-
-    void getAllDPara(double all_d_para[]);
-
-    bool calibration();
-
-    void outputClibrationDPara(std::string  path, std::string data_file);
-
-    bool LoadData(const std::string& datafile);
-
+    void setRobotDHPara(ROBOT_TYPE type);
+    void initiallDHPara();
 
     void setPara();
+    bool LoadData(const std::string& datafile);
+    bool calibration();
 
     void calAllPara();
-
-    void getAllPara(double allpara[]);
-
-    void getCriter(double output_criter[]);
-
     void updateMemberPara();
 
 
+    void getAllPara(double allpara[]);
+    void getAllDPara(double all_d_para[]);
+
+    double getToolPara(std::string index);
+    void getCriter(double output_criter[]);
+
+    void outputClibrationDPara(std::string  path, std::string data_file);
 
 private:
     RobotKinematics *rk;
@@ -73,8 +67,10 @@ private:
     RVector d_allpara;
     double all_para_[MAX_IDEN_PARA_NUM];
 
+    bool kc_cali_beta_;
+
 public:
-    CALIBRATE_METHOD cali_method_;
+    CALIBRATE_METHOD kc_cali_method_;
 
 
 };
