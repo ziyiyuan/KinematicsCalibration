@@ -67,9 +67,9 @@ public:
     CaliType();
     ~CaliType();
 
-    virtual bool loadMeasuredData(const std::string& datafile) = 0;
-    virtual bool loadInputJointAngle(const std::string&  datafile) = 0;
-    virtual void loadInputToolData(const std::string&  datafile) = 0;
+    virtual int loadMeasuredData(const std::string& datafile) = 0;
+    virtual int loadInputJointAngle(const std::string&  datafile) = 0;
+    virtual int loadInputToolData(const std::string&  datafile) = 0;
 
     virtual void getFrameParaJacobian(double& Se, RMatrix& Je, RVector& Fe, RVector& mt_para, RVector& measure_data_i, RVector& joint_i) = 0;
 

@@ -12,7 +12,7 @@ CaliLeica::~CaliLeica()
 
 }
 
-bool CaliLeica::loadMeasuredData(const std::string&  datafile)
+int CaliLeica::loadMeasuredData(const std::string&  datafile)
 {
     std::ifstream afile;
     std::string filename = "mesurements.txt";
@@ -23,7 +23,7 @@ bool CaliLeica::loadMeasuredData(const std::string&  datafile)
     if(!afile)
     {
         cout<<"Open File Fail!"<<endl;
-        return false;
+        return -1;
     }
 
     std::string sline;
@@ -44,7 +44,7 @@ bool CaliLeica::loadMeasuredData(const std::string&  datafile)
             catch(...)
             {
                 cout<<"file format error";
-                return false;
+                return -2;
             }
 
             measure_data_length_ = (int)count;
@@ -81,11 +81,11 @@ bool CaliLeica::loadMeasuredData(const std::string&  datafile)
     }
     afile.close();
 
-    return true;
+    return 1;
 }
 
 //read input joint angle
-bool CaliLeica::loadInputJointAngle(const std::string&  datafile)
+int CaliLeica::loadInputJointAngle(const std::string&  datafile)
 {
     ifstream afile;
     std::string filename = "CAL.txt";
@@ -99,7 +99,7 @@ bool CaliLeica::loadInputJointAngle(const std::string&  datafile)
     if(!afile)
     {
         cout<<"Open File Fail!"<<endl;
-        return false;
+        return -1;
     }
 
     std::string sline;
@@ -125,7 +125,7 @@ bool CaliLeica::loadInputJointAngle(const std::string&  datafile)
                 catch(...)
                 {
                     cout<<"file format error";
-                    return false;
+                    return -2;
                 }
                 input_joint_angle_[j][i] = count * D2r;
                 i++;
@@ -135,10 +135,10 @@ bool CaliLeica::loadInputJointAngle(const std::string&  datafile)
     }
     afile.close();
 
-    return true;
+    return 1;
 }
 
-void CaliLeica::loadInputToolData(const std::string&  datafile)
+int CaliLeica::loadInputToolData(const std::string&  datafile)
 {
     ;
 }
@@ -223,19 +223,17 @@ void CaliLeica::GetEleIdentifyMatrix(RMatrix& Phai_i, RVector &Fe_i, RVector& me
 
     J.resize(para_total_num_);
 
-    cali_para_.measurement_para.x = 3.783869;
-    cali_para_.measurement_para.y = 1.88846;
-    cali_para_.measurement_para.z = 0.06325;
+//    cali_para_.measurement_para.x = 3.783869;
+//    cali_para_.measurement_para.y = 1.88846;
+//    cali_para_.measurement_para.z = 0.06325;
 
-    cali_para_.measurement_rpy_para.r = -1.1047;
-    cali_para_.measurement_rpy_para.p = 0.0103;
-    cali_para_.measurement_rpy_para.y = 0.0048;
+//    cali_para_.measurement_rpy_para.r = -1.1047;
+//    cali_para_.measurement_rpy_para.p = 0.0103;
+//    cali_para_.measurement_rpy_para.y = 0.0048;
 
-    cali_para_.tool_para.x = -0.0031;
-    cali_para_.tool_para.y = 0.0123;
-    cali_para_.tool_para.z = 0.0265;
-
-
+//    cali_para_.tool_para.x = -0.0031;
+//    cali_para_.tool_para.y = 0.0123;
+//    cali_para_.tool_para.z = 0.0265;
 
     P_w_0(0) = cali_para_.measurement_para.x;
     P_w_0(1) = cali_para_.measurement_para.y;
@@ -249,12 +247,17 @@ void CaliLeica::GetEleIdentifyMatrix(RMatrix& Phai_i, RVector &Fe_i, RVector& me
     P_f_t(1) = cali_para_.tool_para.y;
     P_f_t(2) = cali_para_.tool_para.z;
 
+//    rpy_m.show("rpy_m");
+
     rz = rk->RotZ(rpy_m(0));
     rzry = rz * rk->RotY(rpy_m(1));
     Rzyx = rzry * rk->RotX(rpy_m(2));
 
     T_w_0 = rk->RPToT(Rzyx, P_w_0);
     T_f_t = rk->RPToT(Teye, P_f_t);
+
+//    T_w_0.show("T_w_0");
+//    T_f_t.show("T_f_t");
 
     T_base[0] = Tbase;
     for(int i = 0; i < DOF; i++)
@@ -266,6 +269,7 @@ void CaliLeica::GetEleIdentifyMatrix(RMatrix& Phai_i, RVector &Fe_i, RVector& me
     for(int i = 0; i < DOF + 1; i++)
     {
         T_world[i] = T_w_0*T_base[i];
+//        T_world[i].show("T_world");
     }
 
     T_world[DOF + 1] = T_world[DOF] * T_f_t;
@@ -315,10 +319,8 @@ void CaliLeica::GetEleIdentifyMatrix(RMatrix& Phai_i, RVector &Fe_i, RVector& me
         }
         Fe_i(i) = Origen_world[DOF+1](i) - measure_data_i(i);
     }
-
 //        Phai_i.show("Phai_i");
 //        Fe_i.show("Fe_i");
-
 }
 
 bool CaliLeica::calError()
@@ -351,9 +353,9 @@ bool CaliLeica::calError()
     rzry = rz * rk->RotY(rpy(1));
     R01 = rzry * rk->RotX(rpy(2));
 
-    R01.show("ro1");
+//    R01.show("R01");
 
-    T0f.show("T0f");
+//    T0f.show("T0f");
 
 
     int s = 0;
@@ -376,7 +378,7 @@ bool CaliLeica::calError()
 
         P0t = T0f.subMatrix(0,2,0,2)*Pft + T0f.subVector(0,2,3,COL);
 
-        P0t.show("P0t");
+//        P0t.show("P0t");
 
 
         for(int j = 0; j < data_dim_; j++)
@@ -387,7 +389,7 @@ bool CaliLeica::calError()
         }
     }
 
-    Fe.show("Fe");
+//    Fe.show("Fe");
 
     double c_max = 0, c2, c_sum = 0;
     for(int i = 0; i < measure_data_length_ * data_dim_; i++)

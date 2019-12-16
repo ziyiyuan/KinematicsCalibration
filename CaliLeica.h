@@ -9,9 +9,9 @@ public:
     CaliLeica();
     ~CaliLeica();
 
-    virtual bool loadMeasuredData(const std::string& datafile);
-    virtual bool loadInputJointAngle(const std::string&  datafile);
-    virtual void loadInputToolData(const std::string&  datafile);
+    virtual int loadMeasuredData(const std::string& datafile);
+    virtual int loadInputJointAngle(const std::string&  datafile);
+    virtual int loadInputToolData(const std::string&  datafile);
 
 
     virtual void getFrameParaJacobian(double& Se, RMatrix& Je, RVector& Fe, RVector& mt_para, RVector& measure_data_i, RVector& joint_i);

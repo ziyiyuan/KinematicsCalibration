@@ -21,7 +21,7 @@ KinematicsCalibration::KinematicsCalibration()
     cali_type = cali_line;
 
     rk = new RobotKinematics();
-    cali_type->calibration_beta_ = false;
+    kc_cali_beta_ = false;
 }
 
 KinematicsCalibration::~KinematicsCalibration()
@@ -85,10 +85,13 @@ void KinematicsCalibration::getCalibrationBeta()
 
 bool KinematicsCalibration::LoadData(const std::string& datafile)
 {
-    cali_type->loadMeasuredData(datafile);
-    cali_type->loadInputJointAngle(datafile);
+    int flag1, flag2;
+    flag1 = cali_type->loadMeasuredData(datafile);
+    flag2 = cali_type->loadInputJointAngle(datafile);
     //    cali_type->loadInputToolData(datafile);
 
+    if((flag1 + flag2) < 2)
+        return false;
     return true;
 }
 
@@ -139,7 +142,6 @@ bool KinematicsCalibration::calibration()
 {
     // est frame para and update tool para
     RVector d_para;
-    double error;
     cali_type->estParaOfFrame();// set tool para;
     cali_type->getIncrePara(d_para);
     d_allpara = cali_type->calAllDpara(d_para);
@@ -149,9 +151,6 @@ bool KinematicsCalibration::calibration()
     updateMemberPara();
 
     bool flag = cali_type->calError();
-
-    std::cout<<"error_last"<<error<<endl;
-
     return true;
 }
 
@@ -231,7 +230,7 @@ void KinematicsCalibration::outputClibrationDPara(std::string  path, std::string
     afile<<setprecision(5)<<std::endl;
 
 
-    afile<<left<<"D_PARA"<<"MM/DEGREE"<<std::endl;
+    afile<<left<<"D_PARA "<<"MM/DEGREE"<<std::endl;
 
     afile<<setw(5)<<right<<"link:"<<
            setw(showlenth)<<right<<"alpha"<<
@@ -252,7 +251,7 @@ void KinematicsCalibration::outputClibrationDPara(std::string  path, std::string
     }
     afile<<std::endl;
 
-    afile<<left<<"dhPara after calibration"<<"MM/DEGREE"<<std::endl;
+    afile<<left<<"dhPara after calibration "<<"MM/DEGREE"<<std::endl;
 
     afile<<setw(5)<<right<<"link:"<<
            setw(showlenth)<<right<<"alpha"<<
@@ -272,10 +271,8 @@ void KinematicsCalibration::outputClibrationDPara(std::string  path, std::string
                setw(showlenth)<<right<<all_para_[mt_num + 5*j + 4]*r2D<<std::endl;
     }
 
-    afile<<left<<"MEASUREMENT AND TOOL PARA"<<"MM"<<std::endl;
     afile<<std::endl;
-
-
+    afile<<left<<"MEASUREMENT AND TOOL PARA "<<"MM"<<std::endl;
     afile<<setw(5)<<right<<"Mx:"<<setw(showlenth)<<right<<cali_type->cali_para_.measurement_para.x*METER2MM<<std::endl;
     afile<<setw(5)<<right<<"My:"<<setw(showlenth)<<right<<cali_type->cali_para_.measurement_para.y*METER2MM<<std::endl;
     afile<<setw(5)<<right<<"Mz:"<<setw(showlenth)<<right<<cali_type->cali_para_.measurement_para.z*METER2MM<<std::endl;
@@ -367,14 +364,3 @@ void KinematicsCalibration::updateMemberPara()
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-

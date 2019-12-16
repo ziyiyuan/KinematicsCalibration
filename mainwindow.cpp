@@ -71,7 +71,17 @@ void MainWindow::on_pBCalibrate_clicked()
     std::string pathOne = ui->labelDatapath->text().toStdString()+ '/' + ui->cBDatadir->currentText().toStdString() + '/';
     kc->setPara();
 
-    kc->LoadData(pathOne);
+    bool flag_ld = kc->LoadData(pathOne);
+    if(!flag_ld)
+    {
+        QString str = QString("Load data failed!");
+        QMessageBox::warning(this,"Title",str);
+//        QStatusBar.showMessage("press the restart button");
+        ui->frResult->setEnabled(true);
+        ui->pBrestart->setEnabled(true);
+    }
+    else
+    {
 
     bool flag = kc->calibration();
     if(flag)
@@ -93,6 +103,7 @@ void MainWindow::on_pBCalibrate_clicked()
     else
     {
         ui->pBCalibrate->setText("error");
+    }
     }
 }
 
@@ -288,12 +299,12 @@ void MainWindow::on_pBrestart_clicked()
     ui->lEMRz->setText(QString::number(0));
 
     ui->lETx->setText(QString::number(0));
-    ui->lETx->setText(QString::number(0));
-    ui->lETx->setText(QString::number(0));
+    ui->lETy->setText(QString::number(0));
+    ui->lETz->setText(QString::number(0));
 
     ui->lEMx->setText(QString::number(0));
-    ui->lEMx->setText(QString::number(0));
-    ui->lEMx->setText(QString::number(0));
+    ui->lEMy->setText(QString::number(0));
+    ui->lEMz->setText(QString::number(0));
 
     ui->lEMax->setText(QString::number(0));
     ui->lEMean->setText(QString::number(0));
@@ -308,5 +319,7 @@ void MainWindow::on_pBoutputresult_clicked()
     kc->outputClibrationDPara(pathOne,data_file);
     //out put data;
 }
+
+
 
 

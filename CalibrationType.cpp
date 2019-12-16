@@ -39,9 +39,9 @@ bool CaliType::getIncrePara(RVector& d_para)
 
     Rii = R_phai.getDiagVector();
 
-    Phai_m.show("Phai_m");
-    Rii.show("Rii");
-    R_phai.show("R_phai");
+    //    Phai_m.show("Phai_m");
+    //    Rii.show("Rii");
+    //    R_phai.show("R_phai");
     double qr_rii = 1e-8;
     int emptyCol_num = 0;
 
@@ -104,7 +104,7 @@ bool CaliType::getIncrePara(RVector& d_para)
     if(flag)
     {
         d_para = (hS_inv * gS)*(-1);
-        d_para.show("d_para");
+        //        d_para.show("d_para");
     }
     else
         return false;
@@ -133,8 +133,8 @@ void CaliType::GetIdentifyMatrix(RMatrix& Phai, RVector& Fe)
 
         GetEleIdentifyMatrix(Phai_i, Fe_i, measure_data_i, joint_i);
 
-//                Phai_i.show("Phai_i");
-//                Fe_i.show("Fe_i");
+        //                Phai_i.show("Phai_i");
+        //                Fe_i.show("Fe_i");
         for(int j = 0; j < data_dim_; j++)
         {
             for(int k = 0; k < para_total_num_; k++)
@@ -228,7 +228,7 @@ bool CaliType::estParaOfFrame()
                 else
                     return false;
 
-                //                               dk.show("dk");
+                //                dk.show("dk");
 
                 rho = 0.1;
                 sigma = 0.7;
@@ -236,7 +236,6 @@ bool CaliType::estParaOfFrame()
                 srand(time(NULL));
                 lamda = (rand() % 10000) * 0.0001 + 0.0001;
 
-                //                               lamda = 0.3;
                 a = 0.0;
                 b = INFINITY;
                 loops = 0;
@@ -294,9 +293,28 @@ bool CaliType::estParaOfFrame()
                 mt_para = mt_para + lamda * dk;
             }
         }
+        //        mt_para.show("mt_para");
     }
 
-    //    mt_para.show("mt_para");
+
+    double rpy_para;
+    for(int i = 0; i < 3; i++)
+    {
+        rpy_para = mt_para(3 + i);
+        while((rpy_para > M_PI) || (rpy_para < -M_PI))
+        {
+
+            if(rpy_para > M_PI)
+                rpy_para -= 2*M_PI;
+            else if(rpy_para < -M_PI)
+                rpy_para += 2*M_PI;
+            else
+                break;
+        }
+        mt_para(3 + i) = rpy_para;
+    }
+
+    //        mt_para.show("mt_para");
 
     s = 0;
     cali_para_.measurement_para.x = mt_para(s); s++;
@@ -309,9 +327,39 @@ bool CaliType::estParaOfFrame()
         cali_para_.measurement_rpy_para.p = mt_para(s); s++;
         cali_para_.measurement_rpy_para.y = mt_para(s); s++;
     }
-
     cali_para_.tool_para.x = mt_para(s); s++;
     cali_para_.tool_para.y = mt_para(s); s++;
     cali_para_.tool_para.z = mt_para(s); s++;
+
+    if(0)
+    {
+        cali_para_.measurement_rpy_para.r = -1.1047;
+        cali_para_.measurement_rpy_para.p = 0.0103;
+        cali_para_.measurement_rpy_para.y = 0.0048;
+
+        cali_para_.measurement_para.x = 3.783869;
+        cali_para_.measurement_para.y = 1.88846;
+        cali_para_.measurement_para.z = 0.06325;
+
+        cali_para_.tool_para.x = -0.0031;
+        cali_para_.tool_para.y = 0.0123;
+        cali_para_.tool_para.z = 0.0265;
+    }
+
+    if(0)
+    {
+        cali_para_.measurement_rpy_para.r = 0;
+        cali_para_.measurement_rpy_para.p = 0;
+        cali_para_.measurement_rpy_para.y = 0;
+
+        cali_para_.measurement_para.x = 0.0407;
+        cali_para_.measurement_para.y = -1.1701;
+        cali_para_.measurement_para.z = -0.0845;
+
+        cali_para_.tool_para.x = 0.0001;
+        cali_para_.tool_para.y = -0.1035;
+        cali_para_.tool_para.z = 0.0956;
+    }
+
     return true;
 }

@@ -12,7 +12,7 @@ CaliLine::~CaliLine()
 
 }
 
-bool CaliLine::loadMeasuredData(const std::string&  datafile)
+int CaliLine::loadMeasuredData(const std::string&  datafile)
 {
     std::ifstream afile;
     std::string filename = "DynaCal1.msr";
@@ -20,10 +20,11 @@ bool CaliLine::loadMeasuredData(const std::string&  datafile)
     std::string totalPathName = datafile + filename;
 
     afile.open(totalPathName.data());
+
     if(!afile)
     {
-        cout<<"Open File Fail!"<<endl;
-        return false;
+//        cout<<"Open File Fail!"<<endl;
+        return -1; // open file fail!
     }
     std::string s;
     double count = 0;
@@ -36,8 +37,8 @@ bool CaliLine::loadMeasuredData(const std::string&  datafile)
         }
         catch(...)
         {
-            cout<<"file format error";
-            return false;
+//            cout<<"file format error";
+            return -2;
         }
 
         if(i == 0)
@@ -56,11 +57,11 @@ bool CaliLine::loadMeasuredData(const std::string&  datafile)
     }
     afile.close();
 
-    return true;
+    return 1;
 }
 
 //read input joint angle
-bool CaliLine::loadInputJointAngle(const std::string&  datafile)
+int CaliLine::loadInputJointAngle(const std::string&  datafile)
 {
     ifstream afile;
     std::string filename = "point60.txt";
@@ -74,7 +75,7 @@ bool CaliLine::loadInputJointAngle(const std::string&  datafile)
     if(!afile)
     {
         cout<<"Open File Fail!"<<endl;
-        return false;
+        return -1;
     }
     std::string sline;
     std::string ss;
@@ -103,7 +104,7 @@ bool CaliLine::loadInputJointAngle(const std::string&  datafile)
                 catch(...)
                 {
                     cout<<"file format error";
-                    return false;
+                    return -2;
                 }
                 input_joint_angle_[j][i-1] = count * D2r;
                 i++;
@@ -113,10 +114,10 @@ bool CaliLine::loadInputJointAngle(const std::string&  datafile)
     }
     afile.close();
 
-    return true;
+    return 1;
 }
 
-void CaliLine::loadInputToolData(const std::string&  datafile)
+int CaliLine::loadInputToolData(const std::string&  datafile)
 {
     ifstream afile;
     std::string filename = "our_ii.dyn";
@@ -132,7 +133,7 @@ void CaliLine::loadInputToolData(const std::string&  datafile)
     if(!afile)
     {
         cout<<"Open File Fail!"<<endl;
-        return ;
+        return -1;
     }
 
     for(int i = 0; i < 2; i++)
@@ -160,186 +161,6 @@ void CaliLine::loadInputToolData(const std::string&  datafile)
     cali_para_.measurement_para.y = temp[0][1]/MM2METER;
     cali_para_.measurement_para.z = temp[0][2]/MM2METER;
 }
-
-//bool CaliLine::estParaOfFrame()
-//{
-//    // input : DHPARA
-//    // OUTPUT : X Y Z r p y
-////    getFrameParaJacobian();
-//    double c1, c2, lamda, rho, sigma, a, b;
-//    int groupSz, iters, loops, data_index, s;
-
-//    c1 = 0.1;
-//    c2 = 0.7;
-//    lamda = 1.0;
-//    groupSz = 11;
-//    iters = 200;
-//    data_index = -1;
-
-//    RVector Pbm_c(3), Pft_c(3), Pbm(3), Pft(3);
-//    Pbm.setZero();
-//    Pft.setZero();
-
-//    double Se_i, Se, Se_plus;
-//    RMatrix Je(groupSz,para_mt_num_), hS, hS_inv(para_mt_num_,para_mt_num_), Je_i(data_dim_,para_mt_num_);
-
-//    RVector gS(para_mt_num_), gS_plus(para_mt_num_), dk;
-//    RVector Fe_i(data_dim_), Fe(groupSz * data_dim_);
-//    RVector measure_data_i(data_dim_), joint_i(DOF);
-//    RVector mt_para(9);
-//    while(iters--)
-//    {
-//        for(int i = 0; i < measure_data_length_; i++)
-//        {
-//            if(i == measure_data_length_-1)
-//                bool sss = 0;
-
-//            data_index = data_index +1;
-
-//            if(data_index >= measure_data_length_)
-//                data_index = data_index - measure_data_length_;
-
-//           if((data_index + 1)%groupSz == 1)
-//           {
-//               Je.clear();
-//               Fe.setZero();
-//               Se = 0;
-//               s = 0;
-//           }
-
-//           measure_data_i(0) = measure_data_[data_index][0];
-//           for(int k = 0; k < 6; k++)
-//           {
-//               joint_i(k) = input_joint_angle_[data_index][k];
-//           }
-
-//           for(int kk = 0; kk < 3; kk++)
-//           {
-//               mt_para(kk) = Pbm(kk);
-//               mt_para(kk+3) = 0;
-//               mt_para(kk+6) = Pft(kk);
-//           }
-//           getFrameParaJacobian(Se_i, Je_i, Fe_i, mt_para, measure_data_i, joint_i);
-
-//           Se = Se + Se_i;
-//           for(int p = 0; p < para_mt_num_; p++)
-//               Je(s,p) = Je_i(0,p);
-//           Fe(s) = Fe_i(0);
-//           s++;
-
-//           if((data_index + 1) % groupSz == 0)
-//           {
-////               Je.show();
-////               Fe.show();
-
-//               hS = Je.transpose()*Je*2;
-//               gS = Je.transpose()*Fe*2;
-
-////               hS.show("HS");
-////               gS.show("GS");
-//               bool flag = hS.inverse(hS_inv);
-//               if(flag)
-//                   dk = (hS_inv * gS)*(-1);
-//               else
-//                   return false;
-
-////               dk.show("dk");
-
-//               rho = 0.1;
-//               sigma = 0.7;
-
-//               srand(time(NULL));
-//               lamda = (rand() % 9) * 0.1 + 0.1;
-
-////               lamda = 0.3;
-//               a = 0.0;
-//               b = INFINITY;
-//               loops = 0;
-//               while(1)
-//               {
-//                   loops = loops + 1;
-//                   Je.clear();
-//                   Fe.setZero();
-//                   Se_plus = 0;
-//                   s = 0;
-
-//                   for(int ii = data_index + 1 - groupSz; ii < data_index+1; ii++)
-//                   {
-//                       measure_data_i(0) = measure_data_[ii][0];
-//                       for(int k = 0; k < 6; k++)
-//                       {
-//                           joint_i(k) = input_joint_angle_[ii][k];
-//                       }
-
-//                       for(int r = 0; r < 3; r++)
-//                       {
-//                           Pbm_c(r) = Pbm(r) + lamda*dk(r);
-//                           Pft_c(r) = Pft(r) + lamda*dk(r+3);
-//                       }
-
-////                       Pbm_c.show("Pbm_c");
-////                       Pft_c.show("Pft_c");
-//                       for(int kk = 0; kk < 3; kk++)
-//                       {
-//                           mt_para(kk) = Pbm_c(kk);
-//                           mt_para(kk+3) = 0;
-//                           mt_para(kk+6) = Pft_c(kk);
-//                       }
-
-//                       getFrameParaJacobian(Se_i, Je_i, Fe_i, mt_para,  measure_data_i, joint_i);
-
-//                       Se_plus = Se_plus + Se_i;
-
-//                       for(int p = 0; p < para_mt_num_; p++)
-//                           Je(s,p) = Je_i(0,p);
-//                       Fe(s) = Fe_i(0);
-//                       s++;
-//                   }
-
-//                   gS_plus = Je.transpose()*Fe*2;
-
-////                   double aa = gS.dot(dk);
-////                   double bb = gS_plus.dot(dk);
-////                   double cc = Se + gS.dot(dk) * rho*lamda;
-
-//                   if(!(Se_plus <= Se + gS.dot(dk) * rho*lamda))
-//                   {
-//                       b = lamda;
-//                       lamda = (lamda + a)/2;
-//                       continue;
-//                   }
-//                   if(!(gS_plus.dot(dk) >= gS.dot(dk)*sigma))
-//                   {
-//                       a = lamda;
-//                       lamda = std::min(2*lamda,(b + lamda)/2);
-//                       continue;
-//                   }
-//                   break;
-//               }
-//               dk = dk*lamda;
-////               dk.show("dk2");
-
-//               for(int r = 0; r < 3; r++)
-//               {
-//                   Pbm(r) = Pbm(r) + dk(r);
-//                   Pft(r) = Pft(r) + dk(r+3);
-//               }
-////               Pbm.show("Pbm");
-////               Pft.show("Pft");
-
-//           }
-//        }
-//    }
-
-//    cali_para_.measurement_para.x = Pbm(0);
-//    cali_para_.measurement_para.y = Pbm(1);
-//    cali_para_.measurement_para.z = Pbm(2);
-
-//    cali_para_.tool_para.x = Pft(0);
-//    cali_para_.tool_para.y = Pft(1);
-//    cali_para_.tool_para.z = Pft(2);
-//    return true;
-//}
 
 void CaliLine::getFrameParaJacobian(double& Se, RMatrix& Je, RVector& Fe, RVector& mt_para, RVector& measure_data_i, RVector& joint_i)
 {
