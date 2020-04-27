@@ -1,12 +1,9 @@
 #ifndef ROBOTKINEMATICS_H
 #define ROBOTKINEMATICS_H
 
-#include "rvector.h"
-#include "rmatrix.h"
-//#include "model/frames.hpp"
 #define DOF 6
 
-using namespace AUBO;
+//using namespace AUBO;
 
 enum ROBOT_TYPE
 {
@@ -36,21 +33,21 @@ public:
     void getRobotDHPara(double& a2, double& a3, double& d1, double& d2, double& d5, double& d6);
 
 
-    RMatrix homogeneousTransfer(double alpha, double a, double theta,  double d);
+//    RMatrix homogeneousTransfer(double alpha, double a, double theta,  double d);
 
-    RMatrix fKWithBeta(double alpha, double a, double d, double theta, double beta);
+//    RMatrix fKWithBeta(double alpha, double a, double d, double theta, double beta);
 
-    std::vector<RMatrix> GetAllTransMatrixtobase(double dh_para[], bool caliBeta, double beta[]);
+//    std::vector<RMatrix> GetAllTransMatrixtobase(double dh_para[], bool caliBeta, double beta[]);
 
-    RMatrix fKFlangeInBase(double alpha, double a, double d, double theta);
+//    RMatrix fKFlangeInBase(double alpha, double a, double d, double theta);
 
 
-    RMatrix RotZ(double t);
-    RMatrix RotY(double t);
-    RMatrix RotX(double t);
+//    RMatrix RotZ(double t);
+//    RMatrix RotY(double t);
+//    RMatrix RotX(double t);
 
-    RMatrix RPToT(const RMatrix& rot, const RVector& eetrans);
-    RMatrix fKFlangeInBase(double dh_para[], RVector &joint);
+//    RMatrix RPToT(const RMatrix& rot, const RVector& eetrans);
+//    RMatrix fKFlangeInBase(double dh_para[], RVector &joint);
 
 
 

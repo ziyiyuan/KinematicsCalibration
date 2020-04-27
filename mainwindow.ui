@@ -422,7 +422,7 @@ padding: 0 3px 0 3px;
          <string>theta4</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -435,7 +435,7 @@ padding: 0 3px 0 3px;
          <string>alpha6</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -445,13 +445,13 @@ padding: 0 3px 0 3px;
       <item row="0" column="5">
        <widget class="QPushButton" name="pBbeta1">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>beta1</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -461,13 +461,13 @@ padding: 0 3px 0 3px;
       <item row="0" column="1">
        <widget class="QPushButton" name="pBa1">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>a1</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -480,7 +480,7 @@ padding: 0 3px 0 3px;
          <string>a5</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -490,13 +490,13 @@ padding: 0 3px 0 3px;
       <item row="0" column="4">
        <widget class="QPushButton" name="pBtheta1">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>theta1</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -515,7 +515,7 @@ padding: 0 3px 0 3px;
          <string>alpha2</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -525,13 +525,13 @@ padding: 0 3px 0 3px;
       <item row="2" column="3">
        <widget class="QPushButton" name="pBd3">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>d3</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -544,7 +544,7 @@ padding: 0 3px 0 3px;
          <string>d2</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -554,13 +554,13 @@ padding: 0 3px 0 3px;
       <item row="5" column="3">
        <widget class="QPushButton" name="pBd6">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>d6</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -573,7 +573,7 @@ padding: 0 3px 0 3px;
          <string>alpha5</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -583,13 +583,13 @@ padding: 0 3px 0 3px;
       <item row="0" column="0">
        <widget class="QPushButton" name="pBalpha1">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>alpha1</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -599,13 +599,13 @@ padding: 0 3px 0 3px;
       <item row="0" column="3">
        <widget class="QPushButton" name="pBd1">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>d1</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -618,7 +618,7 @@ padding: 0 3px 0 3px;
          <string>a3</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -631,7 +631,7 @@ padding: 0 3px 0 3px;
          <string>d5</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -641,13 +641,13 @@ padding: 0 3px 0 3px;
       <item row="3" column="3">
        <widget class="QPushButton" name="pBd4">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>d4</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -657,13 +657,13 @@ padding: 0 3px 0 3px;
       <item row="1" column="5">
        <widget class="QPushButton" name="pBbeta2">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>beta2</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -676,7 +676,7 @@ padding: 0 3px 0 3px;
          <string>a4</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -689,7 +689,7 @@ padding: 0 3px 0 3px;
          <string>a6</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -705,7 +705,7 @@ padding: 0 3px 0 3px;
          <string>a2</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -718,7 +718,7 @@ padding: 0 3px 0 3px;
          <string>alpha4</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -731,7 +731,7 @@ padding: 0 3px 0 3px;
          <string>alpha3</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -744,7 +744,7 @@ padding: 0 3px 0 3px;
          <string>theta2</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -757,7 +757,7 @@ padding: 0 3px 0 3px;
          <string>theta5</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -767,13 +767,13 @@ padding: 0 3px 0 3px;
       <item row="5" column="4">
        <widget class="QPushButton" name="pBtheta6">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>theta6</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -786,7 +786,7 @@ padding: 0 3px 0 3px;
          <string>theta3</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -796,13 +796,13 @@ padding: 0 3px 0 3px;
       <item row="5" column="5">
        <widget class="QPushButton" name="pBbeta6">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>beta6</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -812,13 +812,13 @@ padding: 0 3px 0 3px;
       <item row="4" column="5">
        <widget class="QPushButton" name="pBbeta5">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>beta5</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -828,7 +828,7 @@ padding: 0 3px 0 3px;
       <item row="3" column="5">
        <widget class="QPushButton" name="pBbeta4">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>beta4</string>
@@ -844,13 +844,13 @@ padding: 0 3px 0 3px;
       <item row="2" column="5">
        <widget class="QPushButton" name="pBbeta3">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="text">
          <string>beta3</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -1092,10 +1092,13 @@ padding: 0 3px 0 3px;
       <item>
        <widget class="QPushButton" name="pBrestart">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text">
          <string>restart</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
         </property>
        </widget>
       </item>

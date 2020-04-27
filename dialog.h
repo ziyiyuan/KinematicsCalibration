@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include "QDebug"
-#include "kinematicscalibration.h"
+#include "kinematics_calibration.h"
 
 namespace Ui {
 class Dialog;

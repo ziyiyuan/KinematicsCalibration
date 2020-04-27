@@ -5,35 +5,25 @@
 #-------------------------------------------------
 
 QT       += core gui
-
-#include(./utility/utility.pri)
-
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = KinematicsCalibration
+TARGET = AUBOKinematicsCalibration
 TEMPLATE = app
 CONFIG += c++11
+
+INCLUDEPATH += $$PWD/../aral_export/include/
+#********linking library **********************************
+LIBS += $$PWD/../aral_export/lib64/libaubo_robotics.a
+LIBS += -lpthread
 
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    robotkinematics.cpp \
-    kinematicscalibration.cpp \
-    CalibrationType.cpp \
-    CaliLine.cpp \
-    CaliLeica.cpp
+    kinematics_calibration.cpp \
 
 HEADERS  += mainwindow.h \
-    robotkinematics.h \
-    kinematicscalibration.h \
-    CalibrationType.h \
-    CaliLine.h \
-    CaliLeica.h
+    kinematics_calibration.h \
+
 
 FORMS    += mainwindow.ui \
-
-INCLUDEPATH += /home/ziyi/Desktop/AUBO_ROBOTICS/aubo_robotics/math/include/
-#INCLUDEPATH += /home/ziyi/AUBO_ROBOTICS/aubo_robotics/model/include/
-LIBS += /home/ziyi/Desktop/AUBO_ROBOTICS/lib/lib64/libaubo_robotics.a
-#    \dialog.ui
 
