@@ -2,10 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "dialog.h"
 #include <QFileDialog>
 #include <QMessageBox>
-
 #include "kinematics_calibration.h"
 
 namespace Ui {
@@ -71,8 +69,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     KinematicsCalibration *kc;
-    Dialog *dialog;
-
 };
 
 #endif // MAINWINDOW_H

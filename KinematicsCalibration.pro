@@ -12,28 +12,30 @@ TEMPLATE = app
 CONFIG += c++11
 
 INCLUDEPATH += $$PWD/../aral_export/include/
+INCLUDEPATH += $$PWD/include
+
 #********linking library **********************************
 
 contains(QT_ARCH, i386)
 {
     LIBS += $$PWD/../aral_export/lib32/libaubo_robotics.a
 }
-
 #contains(QT_ARCH, x86_64)
 #{
 #    LIBS += $$PWD/../aral_export/lib64/libaubo_robotics.a
 #}
-
 LIBS += -lpthread
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    kinematics_calibration.cpp \
+SOURCES += \
+    $$PWD/src/kinematics_calibration.cpp\
+    $$PWD/src/mainwindow.cpp \
+    $$PWD/src/main.cpp \
 
-HEADERS  += mainwindow.h \
-    kinematics_calibration.h \
+HEADERS  += \
+    $$PWD/include/kinematics_calibration.h \
+    $$PWD/include/mainwindow.h \
 
-
-FORMS    += mainwindow.ui \
+FORMS    += \
+    $$PWD/mainwindow.ui \
 

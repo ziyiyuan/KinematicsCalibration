@@ -27,7 +27,7 @@ KinematicsCalibration::KinematicsCalibration()
         DH_check_flag_[i] = 0;
     }
 
-    aral_interface_ = new RLIntface("aubo_i5", /*Creat_Share_Memory*/0 | LOG_DEBUG);
+    aral_interface_ = new RLIntface("../../aral_export/aubo_description/urdf/aubo_i5", /*Creat_Share_Memory*/0 | LOG_DEBUG);
     dof_ = 6;
 }
 
