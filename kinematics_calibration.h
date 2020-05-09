@@ -8,64 +8,19 @@
 #include <math.h>
 #include <string>
 #include <stdio.h>
-
-#include "/home/lg/Projects/aral_export/include/rl_interface/robot_interface.hpp"
-
-
 #include <string.h>
-#include <stdio.h>
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <sstream> // string stream
 #include <stdlib.h>
 #include <ctime>
-struct POSITION
-{
-    double x;
-    double y;
-    double z;
-};
 
-struct RPY
-{
-    double r;// rz
-    double p;
-    double y;
-};
-
-
-struct PARA
-{
-    POSITION tool_para;
-    POSITION measurement_para;
-    RPY measurement_rpy_para;
-    double dh_para[24];
-    double beta[6];
-};
-
-struct CRITER
-{
-    double mean_value;
-    double max_value;
-    double rms_value;
-};
-using namespace std;
-
-using namespace std;
-using namespace ARAL;
-
-
-enum CALIBRATE_METHOD
-{
-    CALI_LINE = 0,      //Dynlog
-    CALI_POS,           // Leica, Faro.
-};
+#include "rl_interface/robot_interface.hpp"
 
 #define MAX_IDEN_PARA_NUM 40
 #define D2r M_PI/180
 #define r2D 180/M_PI
 #define POSITION_DOF 3
+
+using namespace std;
+using namespace ARAL;
 
 typedef enum
 {
@@ -78,82 +33,96 @@ typedef enum
 
 } CALIBRATE_PARA;
 
+enum ROBOT_TYPE
+{
+    AUBO_I3 = 0,
+    AUBO_I5,
+    AUBO_I7,
+    AUBO_I10,
+
+};
+
+struct CRITER
+{
+    double mean_value;
+    double max_value;
+    double rms_value;
+};
+
+enum CALIBRATE_METHOD
+{
+    CALI_LINE = 0,      //Dynlog
+    CALI_POS,           // Leica, Faro.
+};
+
 class KinematicsCalibration
 {
 public:
     KinematicsCalibration();
     ~KinematicsCalibration();
 
-    void setCaliType(const std::string& type);
+    bool calibration();
+
+    bool LoadData(const std::string& datafile);
+
+    void calAllPara();
+
+    void setRobotType(const ROBOT_TYPE type);
+
+    void setCaliType(const std::string& type);//
+
     unsigned int getCaliMethod();
 
-    void setCalibrationBeta(bool value);
+    void setCalibrationBeta(const bool value);
     bool getCalibrationBeta();
 
     void setPara();
-    bool LoadData(const std::string& datafile);
-    bool calibration();
-
-    void calAllPara();
-    void updateMemberPara();
 
     void getAllPara(double allpara[]);
+
     void getAllDPara(double all_d_para[]);
 
-    double getToolPara(std::string index);
+    int getMtNum();
+
+    double getToolPara(const std::string index);
     void getCriter(double output_criter[]);
 
-    void outputClibrationDPara(std::string  path, std::string data_file);
+    void outputClibrationDPara(const std::string  path, const std::string data_file);
 
-    void setCheckFlag(int index, bool value);
-
-    void getCalibrationNum();
-
-private:
-    double d_allpara[MAX_IDEN_PARA_NUM];
-    double all_para_[MAX_IDEN_PARA_NUM];
-
-    bool kc_cali_beta_;
-    bool kc_choose_para_[MAX_IDEN_PARA_NUM];// para in interface;
-
-    RLIntface *aral_interface_;
-
-    std::vector<vector<double> > measure_data_;
-    std::vector<vector<double> > input_joint_angle_;
-    bool check_flag_[MAX_IDEN_PARA_NUM];
-    bool calibration_beta_;
-
-public:
-    KinematicsCalibrationResult cali_result_;
-
+    void setCheckFlag(const int index, const bool value);
 
     int loadMeasuredData(const std::string& datafile);
+
     int loadInputJointAngle(const std::string&  datafile);
+
     int loadInputToolData(const std::string&  datafile);
 
-    bool calError();
-
-public:
-    int GN_;//4 0r 5
-    int para_mt_num_;//6
-    int para_total_num_;// 36 or30
-    int All_para_num_;//36
+private:
 
     int dof_;
 
-    int calibration_para_num_;// check flag ++
-    int choose_cali_num_;
-
-    PARA cali_para_;
-    PARA nom_cali_para_;
-
-    CRITER criter_after_;
+    ROBOT_TYPE robot_type_;
 
     CALIBRATE_METHOD cali_method_;
 
-protected:
-    int data_dim_;      //measure dim;
-    int measure_data_length_;
+    bool check_flag_[MAX_IDEN_PARA_NUM];
+    bool kc_cali_beta_; //
+    bool DH_check_flag_[MAX_IDEN_PARA_NUM];// para in interface;
+
+    int data_dim_;
+    int para_mt_num_;//
+    int All_para_num_;//
+
+    int measure_data_length_;//
+    std::vector<vector<double> > measure_data_;
+    std::vector<vector<double> > input_joint_angle_;
+
+    double d_allpara_[MAX_IDEN_PARA_NUM];
+    double all_para_[MAX_IDEN_PARA_NUM];
+
+    RLIntface *aral_interface_;
+    KinematicsCalibrationResult cali_result_;
+
 };
 
 #endif // KINEMATICSCALIBRATION_H

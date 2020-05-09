@@ -6,9 +6,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //        dialog = new Dialog(this);
-    //        dialog->setModal(false);
-
     kc = new KinematicsCalibration();
 }
 
@@ -21,7 +18,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_cBRobotType_currentIndexChanged(int index)
 {
-//    kc->setRobotDHPara((ROBOT_TYPE)index);
+        kc->setRobotType((ROBOT_TYPE)index);
+    // change robot type
 }
 
 void MainWindow::on_cBCaliType_currentIndexChanged(int index)
@@ -29,7 +27,6 @@ void MainWindow::on_cBCaliType_currentIndexChanged(int index)
     QString str = ui->cBCaliType->currentText();
     kc->setCaliType(str.toStdString());
 }
-
 
 void MainWindow::on_cBCalibrationBeta_clicked(bool checked)
 {
@@ -82,7 +79,7 @@ void MainWindow::on_pBCalibrate_clicked()
 
     std::string pathOne = ui->labelDatapath->text().toStdString()+ '/' + ui->cBDatadir->currentText().toStdString() + '/';
     // load nom_DH para
-    kc->setPara();
+    kc->setPara(); // set total para and check flag
     // load measured data
     bool flag_ld = kc->LoadData(pathOne);
     if(!flag_ld)
@@ -90,11 +87,13 @@ void MainWindow::on_pBCalibrate_clicked()
         QString str = QString("Load data failed!");
         QMessageBox::warning(this,"Title",str);
         //        QStatusBar.showMessage("press the restart button");
-        ui->pBrestart->setEnabled(true);
     }
     else
     {
         bool flag_cal = kc->calibration();
+        ui->pBrestart->setEnabled(true);
+        ui->pBCalibrate->setEnabled(false);
+
         if(flag_cal)
         {
             ui->pBCalibrate->setText("done");
@@ -114,6 +113,8 @@ void MainWindow::on_pBCalibrate_clicked()
         else
         {
             ui->pBCalibrate->setText("error");
+            ui->rBshowDpara->setEnabled(false);
+            ui->rBshowpara->setEnabled(false);
         }
     }
 }
@@ -124,11 +125,8 @@ void MainWindow::on_rBshowpara_clicked(bool checked)
     kc->getAllPara(allpara);
 
     ui->rBshowDpara->setChecked(!checked);
-    int i;
-    if(kc->getCaliMethod() == CALI_LINE)
-        i = 6;
-    if(kc->getCaliMethod() == CALI_POS)
-        i = 9;
+
+    int i = kc->getMtNum();
 
     ui->pBalpha1->setText(QString::number((allpara[i]*r2D),'g',6)); i++;
     ui->pBa1->setText(QString::number((allpara[i]*1000.),'g',6)); i++;
@@ -176,12 +174,7 @@ void MainWindow::on_rBshowDpara_clicked(bool checked)
     kc->getAllDPara(all_d_para);
     ui->rBshowpara->setChecked(!checked);
 
-    int i;
-
-    if(kc->getCaliMethod() == CALI_LINE)
-        i = 6;
-    if(kc->getCaliMethod() == CALI_POS)
-        i = 9;
+    int i = kc->getMtNum();
 
     ui->pBalpha1->setText(QString::number((all_d_para[i]*r2D),'f',5)); i++;
     ui->pBa1->setText(QString::number((all_d_para[i]*1000.),'f',5)); i++;
@@ -410,12 +403,12 @@ void MainWindow::on_pBtheta5_clicked(bool checked)
 
 void MainWindow::on_pBbeta3_clicked(bool checked)
 {
-    kc->setCheckFlag(BETA3,checked);
+    kc->setCheckFlag(BETA3, checked);
 }
 
 void MainWindow::on_pBbeta4_clicked(bool checked)
 {
-    kc->setCheckFlag(BETA4,checked);
+    kc->setCheckFlag(BETA4, checked);
 }
 
 
